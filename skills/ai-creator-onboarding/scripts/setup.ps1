@@ -94,6 +94,17 @@ if (-not (Test-Path $om)) {
   Say "OpenMontage installed at $om"
 } else { Say "OpenMontage ok" }
 
+# 7-1. ECC common rules (plugin installs do not ship rules) + issue-worker agent
+$eccRoot = Get-ChildItem "$HOME\.claude\plugins\cache\ecc\ecc" -Directory -ErrorAction SilentlyContinue | Sort-Object Name | Select-Object -Last 1
+if ($eccRoot -and (Test-Path "$($eccRoot.FullName)\rules\common")) {
+  New-Item -ItemType Directory -Force "$HOME\.claude\rules\ecc" | Out-Null
+  Copy-Item -Recurse -Force "$($eccRoot.FullName)\rules\common" "$HOME\.claude\rules\ecc\"
+  Say "ECC common rules -> ~/.claude/rules/ecc/common"
+} else { Say "ECC rules not found (install plugin first, then re-run)" }
+New-Item -ItemType Directory -Force "$HOME\.claude\agents" | Out-Null
+Copy-Item -Force "$assets\agents\issue-worker.md" "$HOME\.claude\agents\issue-worker.md"
+Say "agent issue-worker installed"
+
 # 8. Global rules
 $g = "$HOME\.claude\CLAUDE.md"
 if (-not (Test-Path $g)) { Copy-Item "$assets\global-CLAUDE.md" $g; Say "global CLAUDE.md created" }

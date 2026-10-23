@@ -41,9 +41,25 @@ powershell -ExecutionPolicy Bypass -File "$HOME\.claude\skills\ai-creator-onboar
 
 ## 3. 규칙 파일
 - 전역 규칙: `assets/global-CLAUDE.md` → `~/.claude/CLAUDE.md` (없으면 복사, 있으면 빠진 섹션만 합치기)
-  - 소통 방식(짧게·쉽게·티키타카), AI 에이전트 만들 땐 grilling → 계획서 → 개발, 자율 진행, task-observer, 링크 → link-to-build, 오픈소스 우선(oss-scout), 로그인/키 처리 규칙
+  - 소통 방식(짧게·쉽게·티키타카), AI 에이전트 만들 땐 grilling → 계획서 → 개발, 자율 진행, task-observer, 링크 → link-to-build, 오픈소스 우선(oss-scout), 로그인/키 처리 규칙, 총괄 비서 역할, ECC 연결
 - 프로젝트 규칙 예시: `assets/project/CLAUDE.md` (브라우저 작업·키 보관 규칙). 새 프로젝트에 맞게 복사.
 - 프로젝트 git 작성자: `git config user.name <github-id>` / `user.email <id>+<github-id>@users.noreply.github.com` (gh api user 로 id 확인)
+
+## 3-1. 일하는 방식: 총괄 비서 + 이슈별 워크트리 개발
+전역 규칙(`assets/global-CLAUDE.md` 의 "역할: 총괄 비서", "ECC 연결")에 들어 있다. 요약:
+- 메인 세션 = 사용자와 대화하는 비서·총괄. 실제 작업(개발·조사·요약·코딩·테스트)은 전부 서브에이전트로 병렬 dispatch.
+- 개발 = 작업마다 GitHub 이슈 → `issue-worker` 에이전트를 `isolation: "worktree"` 로 띄움 → 워커가 자기 워크트리에서 구현·테스트·리뷰 → `git rebase origin/main` → PR → 머지 → 이슈 종료.
+- 위험한 변경(SNS 게시·결제·외부 공개·삭제)은 PR만 열고 `needs-user` 라벨.
+- 상태 질문 → 살아 있는 워커에 SendMessage, 아니면 `gh issue/pr list`, `git worktree list` 로 확인해 표로 보고.
+- ECC 연결: ECC 공통 규칙을 `~/.claude/rules/ecc/common/` 에 복사(플러그인은 rules 를 안 깔아줌). 흐름 = oss-scout → `ecc:planner` → `ecc:tdd-guide` → 구현 → `ecc:code-reviewer`/`ecc:security-reviewer` → 커밋 → rebase → PR → 머지.
+
+새 프로젝트 준비 (Claude가 알아서):
+```bash
+git init -b main   # 이미 있으면 기본 브랜치를 main 으로: git branch -m master main
+gh repo create <github-id>/<프로젝트> --private --source . --push
+for l in "in-progress:FBCA04:작업 중" "needs-user:D93F0B:사용자 확인 필요" "research:0E8A16:조사" "video:5319E7:영상/쇼츠" "agent:1D76DB:AI 에이전트"; do IFS=: read n c d <<<"$l"; gh label create "$n" --color "$c" --description "$d" --force; done
+```
+워커 정의: `assets/agents/issue-worker.md` → `~/.claude/agents/issue-worker.md`
 
 ## 4. 설치 목록 (무엇이 왜 있는지)
 **플러그인/MCP**
