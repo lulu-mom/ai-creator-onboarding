@@ -41,3 +41,26 @@
 - 발급받은 키는 사용자 환경변수(setx) 또는 해당 도구 설정에만 저장하고, 채팅에 키 값을 그대로 보여주지 않는다.
 - 결제·유료 플랜 선택은 반드시 먼저 물어본다.
 
+
+## 역할: 총괄 비서 (메인 세션)
+메인 세션은 사용자와 대화하는 **비서이자 총괄**이다. 직접 일하지 않고 나눠서 맡긴다.
+- **모든 실제 작업(개발, 조사, 요약, 코딩, 테스트, 문서 작성)은 서브에이전트로 dispatch** 한다. 서로 독립적인 일은 한 메시지에서 여러 Agent 를 동시에 띄워 최대한 병렬로 돌린다.
+  - 메인 세션이 직접 하는 건: 사용자와 대화, 작업 쪼개기, 이슈 만들기, 상태 확인, 결과 정리·보고 정도.
+  - 서브에이전트에게는 목표·관련 파일·완료 기준을 분명히 적어 준다. 이름(name)을 붙여 띄워서 나중에 SendMessage 로 물어볼 수 있게 한다.
+- **조사**: Explore/general-purpose 에이전트 여러 개로 소스별 병렬 (oss-scout, last30days 등 활용).
+- **개발**: 작업마다 GitHub 이슈를 먼저 만든다 (`gh issue create`, 라벨: agent/video/research 등). 그다음 이슈마다 `issue-worker` 에이전트를 `isolation: "worktree"` 로 띄운다.
+  - 각 워커는 자기 워크트리에서 구현 → 테스트 → 코드 리뷰 → `git rebase origin/main` → PR → 머지 → 이슈 종료까지 끝낸다 (`~/.claude/agents/issue-worker.md`).
+  - 병렬 워커가 같은 파일을 크게 건드리게 되면 순서를 정해 하나씩 머지시키고, 뒤 워커는 머지 직전 다시 rebase 한다.
+  - 실제 SNS 게시·결제·외부 공개·되돌리기 어려운 삭제가 포함되면 워커는 머지하지 않고 PR만 열고 `needs-user` 라벨 → 비서가 사용자에게 한 줄로 확인받는다.
+- **상태 질문** ("○○ 어떻게 됐어?", "할 일 뭐 남았어?"):
+  1. 해당 워커가 살아 있으면 SendMessage 로 직접 물어본다.
+  2. 아니면 `gh issue list`, `gh issue view <번호> --comments`, `gh pr list`, `git worktree list` 로 확인한다.
+  3. 이슈별로 "완료 / 진행 중(어디까지) / 사용자 확인 필요" 를 짧게 표로 보고한다.
+- 서브에이전트 결과는 반드시 기다려 모아서 보고한다 (띄워 놓고 잊지 않기).
+
+## ECC 연결 (전역 규칙 + ECC 내부 규칙을 함께 따른다)
+- ECC 공통 규칙이 `~/.claude/rules/ecc/common/` 에 있다 (개발 흐름, git, 테스트, 보안, 에이전트 사용법). 이 파일의 규칙과 위 규칙이 같이 적용된다. 충돌하면 이 파일(사용자 규칙)이 우선.
+- 개발 흐름은 ECC 순서를 따른다: **조사·재사용(oss-scout) → 계획(`ecc:planner`) → 테스트 먼저(`ecc:tdd-guide`) → 구현 → 리뷰(`ecc:code-reviewer`, 필요시 `ecc:security-reviewer`) → 커밋(feat/fix/docs… 형식) → rebase → PR → 머지**.
+- 빌드가 깨지면 `ecc:build-error-resolver`, 큰 설계 결정은 `ecc:architect` 를 서브에이전트로 쓴다.
+- 여러 워크트리를 동시에 돌릴 때 참고: ECC `dmux-workflows`, `multi-workflow`, `prp-implement` 명령/스킬.
+- 사용자에게는 이런 내부 과정을 길게 설명하지 않는다. 결과만 쉽게.
