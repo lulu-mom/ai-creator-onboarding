@@ -1,0 +1,103 @@
+{
+  "schema_version": 2,
+  "id": "doodle",
+  "label_ko": "화이트보드 낙서",
+  "description_ko": "종이 배경 위에 손글씨 화살표·동그라미·밑줄이 그려지며 개념을 단계별로 설명하는 공부 노트 스타일.",
+  "best_for": ["개념 설명", "단계/방법", "비교(A vs B)", "공부·자기계발 요약", "과정 정리"],
+  "canvas": { "width": 1080, "height": 1920, "fps": 30 },
+  "colors": {
+    "background": "#FAF7F0",
+    "grid": "#E9E4D8",
+    "card": "#FFFFFF",
+    "card_soft": "#F3EFE6",
+    "placeholder": "#E9E4D8",
+    "ink": "#2B2B2B",
+    "ink_soft": "#55504A",
+    "accent": "#E8590C",
+    "accent_soft": "#FDE8DA",
+    "accent2": "#1864AB",
+    "marker": "#FFE066",
+    "good": "#1C7ED6",
+    "caption_bg": "rgba(255,253,246,0.95)",
+    "caption_text": "#2B2B2B",
+    "caption_emph": "#E8590C"
+  },
+  "font": { "family": "Pretendard", "file": "PretendardVariable.ttf" },
+  "fonts": {
+    "body": { "family": "Pretendard", "file": "PretendardVariable.ttf", "weight": 700, "license": "OFL" },
+    "hand": { "family": "Gaegu", "file": "Gaegu-Bold.ttf", "weight": 700, "css_weight": "700", "license": "OFL", "subset": true }
+  },
+  "background": { "texture": "paper", "color": "background", "grid_px": 44, "grid_color": "grid", "seed": 7 },
+  "layout": {
+    "seam_y": 0.47,
+    "card_margin_x": 66,
+    "card_radius": 38,
+    "card_top_region": [40, 880],
+    "face_split_anchor_y": 0.42,
+    "face_full_anchor_y": 0.34,
+    "split_zoom": 1.12,
+    "full_zoom": 1.04,
+    "emphasis_punch": 1.0,
+    "face_frame": { "inset": 0, "top_gap": 0, "tape": true, "edge": "torn", "tape_x": [110, 970] },
+    "push_in_to": 1.0
+  },
+  "captions": {
+    "max_words": 4,
+    "max_chars": 10,
+    "max_dur": 1.5,
+    "font_size": 76,
+    "font_weight": 700,
+    "pad_x": 24,
+    "pad_y": 10,
+    "radius": 6,
+    "y_split": 0.497,
+    "y_full_face": 0.62,
+    "y_full_graphic": 0.497,
+    "pop_in": 0.07,
+    "box": { "bg": "rgba(255,253,246,0.95)", "radius": 6, "shadow": "0 6px 14px rgba(70,50,20,.18)",
+             "border": "2px solid rgba(43,43,43,.14)", "tilt_deg": 0.8, "word_spacing": 10 },
+    "emphasis": { "method": "marker", "color": "marker", "text": "caption_text" }
+  },
+  "cuts": {
+    "pad_before": 0.08,
+    "pad_after": 0.1,
+    "merge_gap": 0.12,
+    "retake_similarity": 0.72,
+    "fillers": ["음", "어", "아", "그", "으", "에", "음..", "어..", "아..", "그..."],
+    "end_tail": 0.6
+  },
+  "rhythm": {
+    "segment_min": 1.0,
+    "segment_target": 1.5,
+    "segment_max": 2.1,
+    "face_full_ratio": 0.0,
+    "graphic_full_ratio": 0.2,
+    "cuts_per_min_target": 17
+  },
+  "motion": {
+    "language": "doodle",
+    "solid_text": true,
+    "intensity": 0.7,
+    "min_hand_px": 68,
+    "min_body_px": 60,
+    "hand_tracking": -0.08,
+    "blocks": ["dd_stop", "dd_branch", "dd_versus", "dd_note", "dd_handoff", "dd_chat", "dd_rule", "dd_bars",
+               "dd_wait", "dd_burst", "dd_list", "dd_kpi", "dd_split", "dd_pick", "dd_keyword"],
+    "exits": ["lift", "erase", "flip", "slide"],
+    "default_exit": "lift"
+  },
+  "transitions": { "default": "erase", "accent": ["flip"], "duration": 0.3 },
+  "audio": {
+    "target_lufs": -14.0,
+    "true_peak": -1.5,
+    "sfx_gain_db": -20.0,
+    "sfx_on_cuts": true,
+    "sfx": { "events": { "draw": "scribble", "write": "marker", "exit": "erase", "flip": "paper" } }
+  },
+  "speed": 1.15,
+  "auto_select": {
+    "signals": { "keywords": ["개념", "원리", "차이", "방법", "단계", "첫째", "둘째", "vs", "반면", "란"] },
+    "weight": 1.0
+  },
+  "quality": { "reference": null, "targets": { "cuts_per_min": [14, 22] } }
+}
