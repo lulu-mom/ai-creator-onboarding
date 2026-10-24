@@ -1,0 +1,228 @@
+{
+  "schema_version": 2,
+  "id": "bold-talk",
+  "label_ko": "큰 자막 토크",
+  "description_ko": "얼굴을 계속 보여주면서 굵은 단어 자막이 한 단어씩 튀어나오고, 설명이 필요할 때 얼굴 위에 떠 있는 패널이 내용을 보여주는 고에너지 토킹헤드 스타일.",
+  "best_for": [
+    "강한 주장",
+    "돈·숫자 이야기",
+    "동기부여",
+    "이거 모르면 손해 꿀팁",
+    "말이 빠른 영상"
+  ],
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "colors": {
+    "background": "#0E0E0E",
+    "ink": "#FFFFFF",
+    "ink_soft": "#D9D9D9",
+    "accent": "#FFE14D",
+    "accent2": "#3DFF8A",
+    "warn": "#FF4D4D",
+    "good": "#2FBF71",
+    "card": "#1C1C1C",
+    "card_soft": "#262626",
+    "placeholder": "#333333",
+    "accent_soft": "#3A3414",
+    "caption_bg": "rgba(0,0,0,0)",
+    "caption_text": "#FFFFFF",
+    "caption_emph": "#FFE14D"
+  },
+  "font": {
+    "family": "Pretendard",
+    "file": "PretendardVariable.ttf"
+  },
+  "fonts": {
+    "body": {
+      "family": "Pretendard",
+      "file": "PretendardVariable.ttf",
+      "weight": 900,
+      "license": "OFL"
+    }
+  },
+  "layout": {
+    "seam_y": 0.5208,
+    "card_margin_x": 66,
+    "card_radius": 38,
+    "face_split_anchor_y": 0.53,
+    "face_full_anchor_y": 0.3,
+    "split_zoom": 1.0,
+    "full_zoom": 1.12,
+    "face_under_graphic": true,
+    "return_punch": 1.06,
+    "keyword_punch": 1.05,
+    "emphasis_punch": 1.08,
+    "split_fade": 110,
+    "split_punch": 1.07,
+    "return_punch_from": [
+      "graphic",
+      "split"
+    ]
+  },
+  "layouts": {
+    "allowed": {
+      "face_full": 0.35,
+      "split": 0.5,
+      "graphic_full": 0.15
+    },
+    "face_anchor_y": 0.3,
+    "push_in": {
+      "from": 1.0,
+      "to": 1.035
+    },
+    "punch_zoom": {
+      "scale": 1.14,
+      "every": "segment"
+    }
+  },
+  "captions": {
+    "mode": "word_karaoke",
+    "max_words": 3,
+    "max_chars": 8,
+    "max_dur": 1.2,
+    "solo_numbers": false,
+    "bind_prefixes": true,
+    "graphic_box": {
+      "bg": "rgba(0,0,0,.78)",
+      "radius": 22,
+      "pad_x": 30,
+      "pad_y": 6
+    },
+    "graphic_plain": false,
+    "graphic_font_size": 88,
+    "font_size": 104,
+    "number_size": 104,
+    "font_weight": 900,
+    "fill": "#FFFFFF",
+    "stroke": {
+      "color": "#000000",
+      "width": 6
+    },
+    "shadow": {
+      "color": "rgba(0,0,0,.55)",
+      "blur": 10,
+      "y": 4
+    },
+    "emphasis": {
+      "active_color": null,
+      "active_scale": 1.06,
+      "active_lift": 0,
+      "keyword_color": "#FFE14D",
+      "warn_color": "#FF4D4D",
+      "source": "llm_keywords",
+      "warn_words": [
+        "안됩",
+        "안 됩",
+        "금지",
+        "마세요"
+      ]
+    },
+    "animation": {
+      "in": "spring_pop",
+      "in_dur": 0.12,
+      "out": "none"
+    },
+    "safe_x": 0.1,
+    "max_lines": 1,
+    "min_scale": 0.85,
+    "pad_x": 0,
+    "pad_y": 0,
+    "radius": 0,
+    "y_split": 0.585,
+    "y_full_face": 0.585,
+    "y_full_graphic": 0.585,
+    "pop_in": 0.12
+  },
+  "motion": {
+    "language": "kinetic_type",
+    "templates": [
+      "panel",
+      "slam",
+      "blank"
+    ],
+    "stickers": true,
+    "sticker_top": 1270
+  },
+  "transitions": {
+    "default": "hard_cut",
+    "flash_on_layout_change": false,
+    "graphic_exit": "zoom_through"
+  },
+  "cuts": {
+    "pad_before": 0.08,
+    "pad_after": 0.1,
+    "merge_gap": 0.12,
+    "retake_similarity": 0.72,
+    "fillers": [
+      "음",
+      "어",
+      "아",
+      "그",
+      "으",
+      "에",
+      "음..",
+      "어..",
+      "아..",
+      "그..."
+    ],
+    "end_tail": 1.0
+  },
+  "rhythm": {
+    "default_layout": "face",
+    "segment_min": 0.8,
+    "segment_target": 1.2,
+    "segment_max": 1.6,
+    "face_full_ratio": 0.85,
+    "graphic_full_ratio": 0.15,
+    "cuts_per_min_target": 30
+  },
+  "grade": {
+    "gamma": 1.18,
+    "brightness": 0.02,
+    "contrast": 1.12,
+    "saturation": 1.0
+  },
+  "audio": {
+    "target_lufs": -14.0,
+    "true_peak": -1.5,
+    "sfx_gain_db": -18.0,
+    "sfx_on_cuts": true
+  },
+  "speed": 1.15,
+  "auto_select": {
+    "signals": {
+      "wps_min": 5.5,
+      "number_density": 0.6,
+      "assertive_words": [
+        "무조건",
+        "절대",
+        "입니다",
+        "안됩니다"
+      ]
+    },
+    "weight": 1.0
+  },
+  "quality": {
+    "reference": null,
+    "targets": {
+      "cuts_per_min": [
+        25,
+        35
+      ],
+      "dead_air_pct": [
+        0,
+        2
+      ],
+      "caption_y": [
+        0.56,
+        0.64
+      ]
+    }
+  },
+  "graphics": {
+    "host_z": 3
+  }
+}

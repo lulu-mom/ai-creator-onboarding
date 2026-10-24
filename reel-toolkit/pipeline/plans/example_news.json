@@ -1,0 +1,56 @@
+{
+ "_about": "Generic example plan for the news-brief style, written for the same sample script as example.json. Copy it to work/<stem>/ and rewrite every anchor and text for your own video.",
+ "cold_open": "그런데 이 보고서",
+ "drop_sentences": [],
+ "emphasis": ["한 줄도", "2시간", "핵심 숫자만", "10분으로", "검산합니다"],
+ "caption_keep": ["한 줄도 안 썼습니다", "핵심 숫자만", "팀 전체에"],
+ "face": [],
+ "graphic": ["결과가 나왔습니다"],
+ "auto_gap": 2,
+ "newsdesk": {"brand": "AI 실험 브리핑", "date": "2026.10.25", "source": "직접 실험", "live": "EP.1"},
+ "sections": [
+  {"anchor": "", "chip": "핵심", "chip_style": "alert", "title": "보고서, <span class=\"acc\">사람이 0줄</span>"},
+  {"anchor": "매주 월요일", "chip": "1/3", "title": "기존: 매주 <span class=\"acc\">2시간</span>", "sweep": true, "sweep_title": "기존 방식"},
+  {"anchor": "그래서 AI에게", "chip": "2/3", "title": "AI에게 <span class=\"acc\">숫자 추출</span>", "sweep": true, "sweep_title": "AI에게 맡기기"},
+  {"anchor": "결과가 나왔습니다", "chip": "결과", "title": "2시간 → <span class=\"acc\">10분</span>", "sweep": true, "sweep_title": "결과"},
+  {"anchor": "대신 숫자는", "chip": "3/3", "title": "숫자는 <span class=\"acc\">사람이 검산</span>"},
+  {"anchor": "다음엔", "chip": "예고", "title": "다음: <span class=\"acc\">팀 전체</span> 적용"}
+ ],
+ "ticker_items": ["보고서 작성 2시간 → 10분", "AI는 초안, 검산은 사람", "다음 편: 팀 전체 적용"],
+ "tracker_items": [
+  {"label": "메모", "icon": "doc"},
+  {"label": "숫자", "icon": "chart"},
+  {"label": "검산", "icon": "search"}
+ ],
+ "scenes": [
+  {"anchor": "그런데 이 보고서", "template": "question", "params": {
+    "title": "이번 주 보고서", "left": "AI", "right": "사람", "meter_label": "사람이 쓴 줄 수",
+    "at": {"left": "사람이", "right": "한 줄도", "q": "썼습니다"}, "enter": "zoom"}},
+  {"anchor": "매주 월요일", "template": "waiting", "params": {
+    "title": "매주 월요일", "tag": "기존 방식",
+    "rows": [{"label": "메모 정리", "icon": "doc"}, {"label": "숫자 찾기", "icon": "search"}, {"label": "보고서 작성", "icon": "list"}],
+    "timer_label": "걸린 시간", "minutes": 120,
+    "at": {"r0": "보고서", "r1": "쓰는", "r2": "시간", "wait": "걸렸거든요"}, "enter": "drop"}},
+  {"anchor": "그래서 AI에게", "template": "doc_extract", "params": {
+    "title": "AI에게 맡긴 일", "tag": "추출", "doc": "지난주 메모.txt",
+    "lines": ["주간 메모", "· 신규 문의 42건", "· 매출 +8%", "· 이탈 3건", ""], "highlight": [1, 1, 1],
+    "fields": [{"label": "문의", "icon": "mail", "value": "42건"}, {"label": "매출", "icon": "chart", "value": "+8%"}, {"label": "이탈", "icon": "alert", "value": "3건"}],
+    "result": "핵심 숫자만 뽑기",
+    "at": {"f0": "메모를", "f1": "핵심", "f2": "숫자만", "result": "뽑으라고"}, "enter": "push",
+    "tracker": ["active", "active", "todo"]}},
+  {"anchor": "결과가 나왔습니다", "template": "big_stat", "params": {
+    "title": "결과", "icon": "clock", "from": 120, "to": 10, "suffix": "분", "unit": "", "label": "보고서 작성 시간",
+    "dots": 3, "stamp": "DONE", "at": {"count": "10분으로", "stamp": "줄었어요"},
+    "kicker": {"text": "2시간 → <span class=\"rk-acc\">10분</span>", "sub": "같은 보고서, 같은 품질"},
+    "enter": "zoom", "tracker": ["done", "done", "todo"]}},
+  {"anchor": "대신 숫자는", "template": "rule", "params": {
+    "title": "지키는 규칙", "tag": "검토", "if": "AI가 쓴 숫자", "then": "내가 직접 검산", "stamp": "검산 필수",
+    "at": {"if": "숫자는", "then": "제가", "stamp": "검산합니다"}, "enter": "rise", "tracker": ["done", "done", "warn"]}},
+  {"anchor": "다음엔", "template": "pick", "params": {
+    "title": "다음 편 예고", "tag": "NEXT", "icon": "flag", "pick": 2,
+    "options": [{"label": "나 혼자", "icon": "user"}, {"label": "우리 파트", "icon": "list"}, {"label": "팀 전체", "icon": "spark"}],
+    "result": "팀 전체 보고서 자동화", "result_icon": "up",
+    "at": {"o0": "이걸", "o1": "팀", "o2": "전체에", "pick": "적용해볼게요", "cta": "팔로우하고"},
+    "cta": "다음 편: 팀 전체 적용기", "cta_sub": "팔로우하고 결과 받아보기", "enter": "push"}}
+ ]
+}

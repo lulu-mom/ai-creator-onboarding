@@ -1,0 +1,45 @@
+{
+ "_about": "Generic example plan for the doodle (whiteboard) style, written for the same sample script as example.json. Copy it to work/<stem>/ and rewrite every anchor and text for your own video.",
+ "cold_open": "그런데 이 보고서",
+ "drop_sentences": [],
+ "emphasis": ["한 줄도", "2시간", "핵심", "10분으로", "검산합니다", "팀 전체에"],
+ "caption_keep": ["한 줄도 안 썼습니다", "핵심 숫자만", "팀 전체에"],
+ "caption_fixes": {},
+ "face": [],
+ "graphic": ["한 줄도", "결과가 나왔습니다", "검산합니다", "팔로우하고"],
+ "auto_gap": 99,
+ "tracker_items": [
+  {"label": "메모", "icon": "doc"},
+  {"label": "숫자", "icon": "chart"},
+  {"label": "검산", "icon": "search"}
+ ],
+ "scenes": [
+  {"anchor": "그런데 이 보고서", "template": "dd_versus", "params": {
+    "left": "AI", "right": "사람", "line": "누가 썼을까?", "meter": 1.0,
+    "at": {"right": "한 줄도", "q": "썼습니다"},
+    "kicker": {"text": "사람이 쓴 줄 <span class=\"dd-acc\">0줄</span>", "sub": "보고서 자동화 실험"}}},
+  {"anchor": "매주 월요일", "template": "dd_wait", "params": {
+    "rows": ["메모 정리", "숫자 찾기", "보고서 작성"], "text": "매주 2시간",
+    "at": {"r0": "보고서", "wait": "걸렸거든요"}}},
+  {"anchor": "그래서 AI에게", "template": "dd_note", "params": {
+    "doc": "지난주 메모", "lines": ["신규 문의 42건", "매출 +8%", "이탈 3건"],
+    "fields": [{"label": "문의", "value": "42건", "line": 0}, {"label": "매출", "value": "+8%", "line": 1}, {"label": "이탈", "value": "3건", "line": 2}],
+    "at": {"f0": "메모를", "f1": "핵심", "f2": "숫자만"}}},
+  {"anchor": "결과가 나왔습니다", "template": "dd_kpi", "params": {
+    "title": "보고서 작성 시간", "rows": [{"label": "작성", "before": "2시간", "after": "10분"}],
+    "delta": "-110분", "delta_note": "매주 월요일",
+    "at": {"k0": "2시간이", "delta": "10분으로"},
+    "kicker": {"text": "2시간 → <span class=\"dd-acc\">10분</span>",
+               "cards": [{"title": "10분", "lines": ["매주 작성"], "color": "accent", "mark": "check"},
+                         {"title": "0줄", "lines": ["사람 작성"], "color": "accent"}]}}},
+  {"anchor": "대신 숫자는", "template": "dd_rule", "params": {
+    "if": "AI가 쓴 숫자", "then": "그대로 보내기", "stamp": "검산 필수",
+    "at": {"if": "숫자는", "then": "제가", "stamp": "검산합니다"},
+    "kicker": {"text": "숫자는 <span class=\"dd-acc\">사람이</span> 확인", "sub": "AI는 초안, 결정은 나"}}},
+  {"anchor": "다음엔", "template": "dd_pick", "params": {
+    "title": "다음 편", "options": ["나 혼자", "우리 파트", "팀 전체"], "pick": 2, "goal": "팀 전체 적용!",
+    "at": {"pick": "전체에", "goal": "적용해볼게요"},
+    "kicker": {"text": "<span class=\"dd-acc\">팔로우</span>하고 결과 받기",
+               "cards": [{"title": "+ 팔로우", "lines": ["다음 편 알림 받기"], "color": "accent"}]}}}
+ ]
+}

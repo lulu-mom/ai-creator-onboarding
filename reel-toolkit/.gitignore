@@ -1,0 +1,36 @@
+# dependencies / models (re-installed by setup, see README)
+node_modules/
+models/*.task
+.venv/
+
+# renders and intermediate files
+*.mp4
+*.mov
+*.m4a
+*.wav
+out/
+work/
+.hyperframes/
+
+# caches
+__pycache__/
+.pytest_cache/
+.cache/
+quality/.cache/
+
+# personal footage, transcripts and research material (never commit)
+research/
+input/
+footage/
+*.words.json
+words.json
+transcript*.json
+
+# public repo: only generic example plans, no per-video logs or extra media
+pipeline/plans/*.json
+!pipeline/plans/example*.json
+pipeline/ITERATIONS*.md
+*.mp3
+*.webm
+*.aac
+judge_*/
