@@ -44,13 +44,13 @@ AI 에이전트 · AI 쇼츠/영상 · 콘텐츠 생성·자동 편집·배포 �
 | "긴 영상에서 쇼츠 뽑아줘", "클립 여러 개 잘라줘", "오늘 클립 묶음" | `autoshorts` | 마지막 게시 단계는 사용자 확인 후 |
 | "코드로 영상 만들어줘", "HTML 영상", "타이틀·자막 애니메이션", "렌더해줘" | `hyperframes` (+ `hyperframes-cli`, `hyperframes-registry`) | 기성 효과(전환·글리치·차트 등)는 registry 먼저 |
 | "멋진 타이틀 인트로", "로고 등장 효과", "제목이 짠 나타나게" | `canopy-part-title` / `code-slice-hero` / `glass-shard-title` / `wireframe-portal-title` / `frost-sequence-camera-orbit` / `cuboid-carousel` / `orbit-card` | HyperFrames 블록(가로 1920x1080). 세로 릴스면 맞춰 수정 |
-| "배경음악·효과음·아이콘·목소리 넣어줘", "로고 따줘" | `media-use` | HyperFrames 영상용 소재 |
+| "배경음악·효과음·아이콘·목소리 넣어줘", "로고 따줘" | `media-use` | HyperFrames 영상용 소재. AI 생성(목소리·아바타·영상, 유료)은 먼저 확인 |
 | "피그마 디자인으로 영상" + figma 링크 | `figma` | |
 | "발표 슬라이드 만들어줘", "발표 화면" | `slideshow` | |
 | "리모션으로 영상", "리모션 자막/지도/렌더" | `remotion-create` / `remotion-best-practices` / `remotion-captions` / `remotion-maps` / `remotion-render` / `remotion-studio` / `remotion-docs` / `remotion-interactivity` / `remotion-markup` / `remotion-multimedia` / `remotion-saas` / `remotion-upgrade` | 새로 시작은 `remotion-create` |
 | "리모션 걸 하이퍼프레임으로 옮겨줘" | `remotion-to-hyperframes` | |
 | "움직임 부드럽게", "애니메이션 효과 넣어줘", "스크롤하면 움직이게" | `gsap-core` / `gsap-timeline` / `gsap-scrolltrigger` / `gsap-plugins` / `gsap-utils` / `gsap-react` / `gsap-frameworks` / `gsap-performance` | 웹·HTML 영상 안의 애니메이션 |
-| "이 바이럴 영상처럼 만들어줘", "AI로 영상 연출해줘" | `hypit` | |
+| "이 바이럴 영상처럼 만들어줘", "AI로 영상 연출해줘" | `hypit` | AI 생성(유료)은 먼저 확인 |
 | "AI로 영상/이미지 만들어줘" | MCP `higgsfield` | 유료 크레딧 → 먼저 확인 |
 
 ### 인스타그램 (글·기획만. 로그인·게시 안 함)
@@ -90,10 +90,10 @@ AI 에이전트 · AI 쇼츠/영상 · 콘텐츠 생성·자동 편집·배포 �
 | 사용자가 이렇게 말하면 | 쓸 스킬 | 비고 |
 |---|---|---|
 | "올려줘", "예약해줘", "인스타·틱톡·유튜브에 게시" | `upload-post` | |
-| "AI로 만들어서 바로 올려줘" | `higgsfield-to-social` | 유료 크레딧 |
-| "웹사이트로 카드뉴스 자동으로 계속" | `viraloop` | |
+| "AI로 만들어서 바로 올려줘" | `higgsfield-to-social` | 유료 크레딧 → 먼저 확인 |
+| "웹사이트로 카드뉴스 자동으로 계속" | `viraloop` | 자동 게시 포함 → 게시는 사용자 확인 후 |
 | "앱/제품 홍보 슬라이드 틱톡에" | `tiktok-app-marketing` | |
-| "댓글에 키워드 달면 DM 자동으로" | `comment-funnel` | |
+| "댓글에 키워드 달면 DM 자동으로" | `comment-funnel` | DM 자동 발송 → 켜기 전 사용자 확인 |
 | "광고 성과 봐줘", "메타 광고 만들어줘" | MCP `meta-ads` | 돈 나감 → 먼저 확인 |
 
 ### 조사·수집
@@ -103,7 +103,7 @@ AI 에이전트 · AI 쇼츠/영상 · 콘텐츠 생성·자동 편집·배포 �
 | "제대로 조사해줘", "공식 문서로 확인" | `research` (+ `search-strategy`) | |
 | "이런 스킬/도구 있어?", "○○ 하는 방법" | `find-skills` | 새 기능은 `oss-scout` 먼저 |
 | "이 페이지 글로 저장해줘", "웹페이지 마크다운으로" | `baoyu-url-to-markdown` | |
-| "검색해줘", "구글 결과 뽑아줘" | `search` / `discover-api` | Bright Data(무료 크레딧). 단순 조회는 WebSearch 로 충분 |
+| "검색해줘", "구글 결과 뽑아줘" | `search` / `discover-api` | Bright Data(무료 크레딧, 다 쓰면 유료 → 확인). 단순 조회는 WebSearch 로 충분 |
 | "이 사이트 긁어와", "페이지 내용 가져와" | `scrape` / `bright-data-mcp` / `brightdata-cli` | 단순 읽기는 WebFetch 로 충분 |
 | "아마존·인스타·링크드인 데이터 뽑아줘" | `data-feeds` | |
 | "스크래퍼 만들어줘" | `scraper-builder` / `scraper-studio` | |
