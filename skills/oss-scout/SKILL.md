@@ -27,7 +27,7 @@ description: 직접 만들기 전에 "이미 잘 되는 무료 오픈소스 스�
 
 | 소스 | 방법 (모두 무료) |
 |---|---|
-| 이미 설치된 것 | `~/.claude/skills` 목록, `claude mcp list`, `claude plugin list` |
+| 이미 설치된 것 | `~/.claude/skills`·`~/.agents/skills`(Codex) 목록, `claude mcp list`, `claude plugin list`, `codex mcp list` |
 | 스킬 레지스트리 | `npx -y skills find "<검색어>"` (find-skills) — 설치 수 확인 |
 | GitHub 인기순 | WebFetch `https://api.github.com/search/repositories?q=<검색어>&sort=stars` |
 | GitHub 최근 급상승 | `...?q=<검색어>+created:>YYYY-MM-DD&sort=stars` (오늘 기준 60~90일 전), trendshift.io |
@@ -55,7 +55,7 @@ description: 직접 만들기 전에 "이미 잘 되는 무료 오픈소스 스�
 ## 5단계: 직접 확인
 추천 1순위는 설치해서 **한 번 실제로 돌려본다** (간단한 테스트 한 줄). 안 되면 2순위로 넘어간다.
 설치는 전역으로: `npx -y skills add <owner/repo> -g -a claude-code --skill '*' -y --copy`
-MCP는 `claude mcp add --scope user ...`
+MCP는 `claude mcp add --scope user ...` (Codex 도 쓰면 `codex mcp add ...` 도. 키는 환경변수 이름만)
 
 ## 6단계: 짧게 제안
 > 🔎 찾아봤어요 (검색 ○바퀴, 후보 ○개 중)
@@ -67,4 +67,4 @@ MCP는 `claude mcp add --scope user ...`
 - 유료 결제, 계정 연결, 시스템 전체를 바꾸는 설치는 먼저 물어본다.
 
 ## 기록
-`~/.claude/skills/oss-scout/discoveries.md` 에 한 줄씩: `날짜 | 이름 | 무엇 | 무료? | 결과(좋음/별로/이유)`. 다음 조사 때 먼저 확인한다.
+`~/.claude/skills/oss-scout/discoveries.md` (Codex 에서도 이 파일 하나를 같이 쓴다) 에 한 줄씩: `날짜 | 이름 | 무엇 | 무료? | 결과(좋음/별로/이유)`. 다음 조사 때 먼저 확인한다.

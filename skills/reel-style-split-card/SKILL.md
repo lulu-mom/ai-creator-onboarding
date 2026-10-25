@@ -22,7 +22,7 @@ $env:Path = [Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [Env
 $ENGINE = @([Environment]::GetEnvironmentVariable("REEL_TOOLKIT_DIR","User"), "$HOME\projects\ai-creator-onboarding\reel-toolkit") |
   Where-Object { $_ -and (Test-Path "$_\pipeline\make_reel.py") } | Select-Object -First 1
 ```
-`$SKILL` = 이 폴더 (`$HOME\.claude\skills\reel-style-split-card`). `<stem>` = 입력 영상 파일 이름(확장자 제외).
+`$SKILL` = 이 폴더 = 이 SKILL.md 가 있는 곳 (Claude: `$HOME\.claude\skills\reel-style-split-card`, Codex: `$HOME\.agents\skills\reel-style-split-card`). `<stem>` = 입력 영상 파일 이름(확장자 제외).
 
 ## 절차 (끝까지 자동으로 진행, 사용자에게 중간 확인 안 받음)
 
