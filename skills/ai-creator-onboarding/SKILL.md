@@ -73,10 +73,12 @@ for l in "in-progress:FBCA04:작업 중" "needs-user:D93F0B:사용자 확인 필
 - 조사: find-skills, last30days, research, search-strategy, baoyu-youtube-transcript, baoyu-url-to-markdown, Bright Data 스킬 21종
 - 작업 방식: grill-me/grilling, task-observer, agent-browser, ego-browser
 - 직접 만든 것: **link-to-build**(링크 → 조사 → 구현 → 결과 페이지), **oss-scout**(무료 오픈소스 먼저 끝까지 찾기)
+- 릴스 자동 편집: **reel-maker**(영상 넣으면 스타일 고르기 → 자동 편집 → 품질 검사), 스타일 4종 **reel-style-split-card**(스플릿 카드) / **reel-style-news-brief**(뉴스 브리핑) / **reel-style-bold-talk**(큰 자막 토크) / **reel-style-doodle**(화이트보드 낙서)
 
 **프로그램**
 - ffmpeg, gh, yt-dlp, faster-whisper, Silero VAD, MediaPipe, headroom-ai, hypit CLI, agent-browser(+Chrome), ego lite
 - OpenMontage: `<projects>\OpenMontage` (venv + remotion-composer + piper-tts)
+- 릴스 편집 엔진 reel-toolkit: `<projects>\ai-creator-onboarding\reel-toolkit` (이 저장소의 `reel-toolkit/` 폴더만 받음, 로그인 불필요). npm 패키지 + 크로미엄 + 얼굴 인식 모델 + 파이썬 패키지까지 설치하고 위치를 사용자 환경변수 `REEL_TOOLKIT_DIR` 에 저장
 - `python3` 별칭(=python.exe 복사본): last30days 가 필요로 함
 
 ## 5. 점검 (온보딩 끝에 한 번)
@@ -86,6 +88,7 @@ python -c "import faster_whisper, silero_vad, mediapipe; print('py ok')"
 ffmpeg -version | Select-Object -First 1; hypit version; yt-dlp --version
 [Environment]::GetEnvironmentVariable("UPLOAD_POST_API_KEY","User").Length
 [Environment]::GetEnvironmentVariable("BRIGHTDATA_API_KEY","User").Length
+python "$([Environment]::GetEnvironmentVariable('REEL_TOOLKIT_DIR','User'))\pipeline\make_reel.py" --help | Select-Object -First 1   # 릴스 엔진
 ```
 결과는 ✅/⚠️ 목록으로 짧게. ⚠️ 는 "로그인만 해주세요" 형태로 요청.
 
