@@ -89,7 +89,11 @@ if (Has claude) {
   if ($mcp -notmatch "playwright") { claude mcp add --scope user playwright -- npx -y "@playwright/mcp@latest" | Out-Null; Say "mcp playwright added" }
   if ($mcp -notmatch "headroom")   { headroom mcp install | Out-Null; Say "mcp headroom added" }
   $bd = [Environment]::GetEnvironmentVariable("BRIGHTDATA_API_KEY","User")
-  if ($bd -and $mcp -notmatch "brightdata") { claude mcp add --scope user --transport sse brightdata "https://mcp.brightdata.com/sse?token=$bd" | Out-Null; Say "mcp brightdata added" }
+  if ($bd) {
+    # The key stays in the env var: config stores only the name ${BRIGHTDATA_API_KEY} (expanded by Claude Code at connect time).
+    if ($mcp -match "mcp\.brightdata\.com/(sse|mcp)\?token=") { claude mcp remove brightdata --scope user | Out-Null; $mcp = ""; Say "mcp brightdata: old token-in-URL entry removed" }
+    if ($mcp -notmatch "brightdata") { claude mcp add --scope user --transport http brightdata "https://mcp.brightdata.com/mcp" --header 'Authorization: Bearer ${BRIGHTDATA_API_KEY}' | Out-Null; Say "mcp brightdata added (key via env var)" }
+  }
 } else { Say "claude command not found - Claude Code plugin/MCP steps skipped" }
 
 # 7. OpenMontage

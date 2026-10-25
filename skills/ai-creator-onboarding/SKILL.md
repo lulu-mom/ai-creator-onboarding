@@ -31,7 +31,7 @@ powershell -ExecutionPolicy Bypass -File "$HOME\.claude\skills\ai-creator-onboar
 | ego lite 브라우저 | https://lite.ego.app/ 에서 설치, 첫 실행 때 "크롬 데이터 가져오기" | `ego-browser nodejs -e "console.log('ok')"` 로 확인 |
 | GitHub | 크롬에서 `github.com/login/device` 로그인 + 코드 입력 | `gh auth login --web` 백그라운드 실행 → 코드 전달 → `gh auth status` |
 | Upload-Post | 가입/로그인 (무료: 월 10회 업로드, 편집 30분) | ego TaskSpace로 `app.upload-post.com/api-keys` → 키 생성 → `setx UPLOAD_POST_API_KEY` → `GET https://api.upload-post.com/api/uploadposts/users` (헤더 `Authorization: Apikey <key>`) 200 확인 |
-| Bright Data | 가입/로그인 (무료 크레딧 5,000) | `brightdata.com/cp/setting/users` → Show 버튼(오버레이 때문에 page.evaluate 로 클릭) → `setx BRIGHTDATA_API_KEY` → MCP 추가(`claude mcp add --scope user --transport sse brightdata "https://mcp.brightdata.com/sse?token=<key>"`) |
+| Bright Data | 가입/로그인 (무료 크레딧 5,000) | `brightdata.com/cp/setting/users` → Show 버튼(오버레이 때문에 page.evaluate 로 클릭) → `setx BRIGHTDATA_API_KEY` → MCP 추가: 키 값은 설정에 쓰지 않고 환경변수 이름만 (`claude mcp add --scope user --transport http brightdata "https://mcp.brightdata.com/mcp" --header 'Authorization: Bearer ${BRIGHTDATA_API_KEY}'`, 작은따옴표 필수). `setx` 직후엔 새 터미널/새 Claude 창에서 `claude mcp list` → Connected 확인 |
 | Higgsfield, Meta Ads | 새 창에서 `/mcp` → 항목 선택 → Authenticate → 로그인 | 연결 확인. katana 같은 힉스필드 전용 기능은 로그인 후 확인 |
 | ECC 플러그인 설정 2개 | `/plugin configure ecc@ecc` | — |
 
@@ -118,7 +118,7 @@ setup 이 Codex 쪽에 하는 일:
 - **스킬**: 같은 스킬 묶음을 `npx skills add ... -a claude-code codex` 로 두 곳에 설치. Codex 쪽 위치는 `~/.agents/skills` (Codex 가 여기서 스킬 목록을 읽는다). 직접 만든 스킬도 복사.
 - **규칙**: `assets/global-AGENTS.md` → `~/.codex/AGENTS.md` (없거나 비어 있으면 복사. 이미 있으면 건드리지 않고 안내만 → 빠진 섹션은 Claude/Codex 가 손으로 합친다). 맨 위 "바꿔 읽기" 표가 Claude 전용 표현(Skill 도구, 서브에이전트, `/mcp`, Artifact …)을 Codex 식으로 옮겨 준다.
 - **프로젝트 규칙**: `~/.codex/config.toml` 에 `project_doc_fallback_filenames = ["CLAUDE.md"]` → 프로젝트에 `CLAUDE.md` 만 있어도 Codex 가 그대로 읽는다(따로 `AGENTS.md` 를 만들 필요 없음. 만들면 그쪽이 우선). 긴 규칙 때문에 `project_doc_max_bytes = 65536`.
-- **연결 도구(MCP)**: higgsfield, meta-ads(로그인형), playwright, headroom, brightdata. brightdata 키는 설정 파일에 값을 쓰지 않고 환경변수 이름만 적는다(`bearer_token_env_var = "BRIGHTDATA_API_KEY"`).
+- **연결 도구(MCP)**: higgsfield, meta-ads(로그인형), playwright, headroom, brightdata. brightdata 키는 설정 파일에 값을 쓰지 않고 환경변수 이름만 적는다(Codex: `bearer_token_env_var = "BRIGHTDATA_API_KEY"`, Claude Code: 헤더 `Authorization: Bearer ${BRIGHTDATA_API_KEY}`).
 
 사용자 할 일 (한 번만, 터미널에서):
 | 할 일 | 명령 |
