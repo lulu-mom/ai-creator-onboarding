@@ -239,7 +239,7 @@
 - `compose.captions_html`: `captions.mode / stroke / box(null 가능) / emphasis.method / hf_component` 분기.
 - `compose._layout_box`, `face_clips`: `layouts.allowed` 에 새 레이아웃(`screen_top`, `screen_full_bubble`, `letterbox`, `type_card`) 추가.
 - 플래너(`steps/plan.py`): `motion.blocks` 화이트리스트 안에서만 그래픽 고르기.
-- 채점기: 지금 레퍼런스가 크림 스플릿 릴스 하나라 다른 스타일은 '레퍼런스 유사도'에서 손해. `quality.targets` 로 스타일별 목표를 받게 하거나, 스타일별 레퍼런스가 없으면 해당 항목 제외.
+- 채점기: 레퍼런스 비교는 선택 사항(`--reference`). `quality.targets` 로 스타일별 목표를 받게 하거나, 스타일별 레퍼런스가 없으면 해당 항목 제외.
 
 ## 스킬 패키징안
 

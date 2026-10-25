@@ -34,3 +34,14 @@ pipeline/ITERATIONS*.md
 *.webm
 *.aac
 judge_*/
+
+# stills and subtitle exports made inside the clone
+*.jpg
+*.jpeg
+*.png
+*.srt
+*.vtt
+*.ass
+*.mkv
+*.MP4
+*.MOV

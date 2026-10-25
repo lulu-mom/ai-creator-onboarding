@@ -1,6 +1,6 @@
 {
- "_about": "Generic example content plan (split-card style). Every anchor is a word/phrase from the video's own transcript (work/<stem>/transcript.json), so the plan survives re-cutting. This example assumes a talk like: '그런데 이 보고서, 사람이 한 줄도 안 썼습니다. 매주 월요일 보고서 쓰는 데 두 시간 걸렸거든요. 그래서 AI에게 이렇게 시켜봤습니다. 지난주 메모를 주고 핵심 숫자만 뽑으라고 했죠. 결과가 나왔습니다. 두 시간이 10분으로 줄었어요. 대신 숫자는 꼭 제가 검산합니다. 다음엔 이걸 팀 전체에 적용해볼게요. 팔로우하고 결과 받아보세요.'",
- "_example_transcript": "그런데 이 보고서, 사람이 한 줄도 안 썼습니다. 매주 월요일 보고서 쓰는 데 두 시간 걸렸거든요. 그래서 AI에게 이렇게 시켜봤습니다. 지난주 메모를 주고 핵심 숫자만 뽑으라고 했죠. 결과가 나왔습니다. 두 시간이 10분으로 줄었어요. 대신 숫자는 꼭 제가 검산합니다. 다음엔 이걸 팀 전체에 적용해볼게요. 팔로우하고 결과 받아보세요.",
+ "_about": "Generic example content plan (split-card style). Every anchor is a word/phrase from the video's own transcript (work/<stem>/transcript.json), so the plan survives re-cutting. This example assumes a talk like: '그런데 이 보고서, 사람이 한 줄도 안 썼습니다. 매주 월요일 보고서 쓰는 데 2시간 걸렸거든요. 그래서 AI에게 이렇게 시켜봤습니다. 지난주 메모를 주고 핵심 숫자만 뽑으라고 했죠. 결과가 나왔습니다. 2시간이 10분으로 줄었어요. 대신 숫자는 꼭 제가 검산합니다. 다음엔 이걸 팀 전체에 적용해볼게요. 팔로우하고 결과 받아보세요.'",
+ "_example_transcript": "그런데 이 보고서, 사람이 한 줄도 안 썼습니다. 매주 월요일 보고서 쓰는 데 2시간 걸렸거든요. 그래서 AI에게 이렇게 시켜봤습니다. 지난주 메모를 주고 핵심 숫자만 뽑으라고 했죠. 결과가 나왔습니다. 2시간이 10분으로 줄었어요. 대신 숫자는 꼭 제가 검산합니다. 다음엔 이걸 팀 전체에 적용해볼게요. 팔로우하고 결과 받아보세요.",
  "cold_open": "그런데 이 보고서",
  "drop_sentences": [],
  "emphasis": [
