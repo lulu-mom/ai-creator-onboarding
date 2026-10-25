@@ -1,0 +1,223 @@
+{
+ "schema_version": 2,
+ "id": "news-brief",
+ "label_ko": "뉴스 브리핑",
+ "description_ko": "상단 헤드라인 바와 하단 자막띠, 흐르는 티커로 소식을 빠르고 믿음직하게 전하는 뉴스 앵커 스타일.",
+ "best_for": [
+  "AI/IT 뉴스",
+  "업계 소식",
+  "주간 트렌드 정리",
+  "항목 나열형 소식"
+ ],
+ "canvas": {
+  "width": 1080,
+  "height": 1920,
+  "fps": 30
+ },
+ "colors": {
+  "background": "#F1F3F5",
+  "card": "#FFFFFF",
+  "card_soft": "#F1F3F5",
+  "placeholder": "#DEE2E6",
+  "ink": "#0B1F3A",
+  "ink_soft": "#5F6B7A",
+  "accent": "#E03131",
+  "accent_soft": "#FFE3E3",
+  "good": "#2F9E44",
+  "caption_bg": "rgba(11,31,58,0.96)",
+  "caption_text": "#FFFFFF",
+  "caption_emph": "#E03131",
+  "caption_emph_bg": "#E03131",
+  "desk": "#0B1F3A",
+  "breaking": "#E03131",
+  "flash": "#FFD43B",
+  "tag_grey": "#ADB5BD"
+ },
+ "font": {
+  "family": "Pretendard",
+  "file": "PretendardVariable.ttf"
+ },
+ "layout": {
+  "seam_y": 0.552,
+  "card_margin_x": 66,
+  "card_radius": 8,
+  "face_split_anchor_y": 0.42,
+  "face_full_anchor_y": 0.3,
+  "face_full_top": 300,
+  "split_zoom": 1.0,
+  "full_zoom": 1.04,
+  "emphasis_punch": 1.15,
+  "stage_cy": 680,
+  "stage_graphic_cy": 680,
+  "graphic_scale": 1.0,
+  "fit_max_h": 700,
+  "kicker_top": 1268
+ },
+ "captions": {
+  "style": "lower_third",
+  "max_words": 3,
+  "max_chars": 9,
+  "max_dur": 1.3,
+  "font_size": 74,
+  "font_weight": 700,
+  "pad_x": 26,
+  "pad_y": 12,
+  "radius": 4,
+  "bar": {
+   "x": 54,
+   "w": 972,
+   "pad_x": 34,
+   "pad_y": 16,
+   "radius": 4,
+   "notch": 16
+  },
+  "y_split": 0.585,
+  "y_full_face": 0.585,
+  "y_full_graphic": 0.585,
+  "emphasis": {
+   "method": "box",
+   "color": "#E03131",
+   "source": "plan_keywords"
+  },
+  "pop_in": 0.07,
+  "letter_spacing": 0
+ },
+ "graphics": {
+  "extra_css": [
+   ".rk-card { border-radius: 8px; border-top: 12px solid #0B1F3A; box-shadow: 0 14px 40px rgba(11,31,58,.14), 0 2px 6px rgba(11,31,58,.08); }",
+   ".rk-dots { display: none; }",
+   ".rk-hd { border-bottom: 2px solid #E9ECEF; }",
+   ".rk-hd-ico { border-radius: 6px; background: #0B1F3A; }",
+   ".rk-pill { border-radius: 4px; background: #E03131; color: #fff; }",
+   ".rk-row, .rk-ibox { border-radius: 8px; }",
+   ".rk-btn, .rk-chip, .rk-stamp, .rk-tc { border-radius: 6px; }",
+   ".rk-bar, .rk-fill { border-radius: 3px; }",
+   ".rk-kick-t { color: #0B1F3A; }",
+   ".rk-kick-s { color: #495057; }",
+   "/* phone legibility: no in-card text below ~30px on screen */",
+   ".rk-card [style*='font-size:24px'], .rk-card [style*='font-size:26px'] { font-size: 28px !important; }",
+   ".rk-card [style*='font-size:27px'] { font-size: 29px !important; }"
+  ],
+  "exit": {
+   "*": "{y:-36,opacity:0,duration:.16,delay:.12,ease:\"power2.in\"}"
+  }
+ },
+ "overlays": {
+  "newsdesk": {
+   "top_h": 300,
+   "brand": "AI 브리핑",
+   "live": "LIVE",
+   "sweep": {
+    "top": 300,
+    "bottom": 1834,
+    "lead": 0.42,
+    "in": 0.2,
+    "out": 0.24,
+    "content_top": 150
+   },
+   "ticker": {
+    "y": 1834,
+    "h": 66,
+    "label": "브리핑",
+    "speed": 110,
+    "font_size": 34
+   },
+   "meta_top": 66,
+   "head_top": 160
+  }
+ },
+ "motion": {
+  "language": "lower_thirds",
+  "intensity": 0.7
+ },
+ "transitions": {
+  "default": "hard_cut",
+  "accent": [
+   "section_sweep"
+  ]
+ },
+ "cuts": {
+  "pad_before": 0.08,
+  "pad_after": 0.1,
+  "merge_gap": 0.12,
+  "retake_similarity": 0.72,
+  "fillers": [
+   "음",
+   "어",
+   "아",
+   "그",
+   "으",
+   "에",
+   "음..",
+   "어..",
+   "아..",
+   "그..."
+  ],
+  "end_tail": 0.6
+ },
+ "rhythm": {
+  "segment_min": 1.0,
+  "segment_target": 1.4,
+  "segment_max": 2.0,
+  "face_full_ratio": 0.15,
+  "graphic_full_ratio": 0.15,
+  "cuts_per_min_target": [
+   18,
+   24
+  ]
+ },
+ "audio": {
+  "target_lufs": -14.0,
+  "true_peak": -2.5,
+  "sfx_gain_db": -20.0,
+  "sfx_on_cuts": true
+ },
+ "speed": 1.15,
+ "auto_select": {
+  "signals": {
+   "date_words": [
+    "오늘",
+    "이번 주",
+    "이번주",
+    "어제"
+   ],
+   "news_words": [
+    "발표",
+    "출시",
+    "공개",
+    "업데이트",
+    "소식"
+   ],
+   "list_words": [
+    "첫 번째",
+    "두 번째",
+    "세 번째",
+    "세번째"
+   ]
+  },
+  "weight": 1.0
+ },
+ "quality": {
+  "reference": null,
+  "targets": {
+   "cuts_per_min": [
+    18,
+    24
+   ],
+   "segment_s": [
+    8,
+    15
+   ],
+   "caption_y": [
+    0.58,
+    0.64
+   ],
+   "caption_font_px": 74
+  },
+  "caption_band": [
+   0.54,
+   0.64
+  ],
+  "score_cmd": "python quality/reel_score.py --output <mp4> --words <mp4 stem>.words.json --caption-band 0.54,0.64 --judge-pack <DIR>"
+ }
+}

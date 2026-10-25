@@ -1,0 +1,87 @@
+{
+  "_source": "split-card style: cream background, UI card on top, face below (1080x1920)",
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "colors": {
+    "background": "#F0EAE6",
+    "card": "#FFFFFF",
+    "card_soft": "#F6F1EE",
+    "placeholder": "#E9E3DF",
+    "ink": "#1E1B1A",
+    "ink_soft": "#8C8580",
+    "accent": "#E0654A",
+    "accent_soft": "#FBE3DC",
+    "good": "#2FA36B",
+    "caption_bg": "rgba(30,26,26,0.92)",
+    "caption_text": "#FFFFFF",
+    "caption_emph": "#F07650"
+  },
+  "font": {
+    "family": "Pretendard",
+    "file": "PretendardVariable.ttf"
+  },
+  "layout": {
+    "seam_y": 0.45,
+    "card_margin_x": 66,
+    "card_radius": 38,
+    "card_top_region": [
+      190,
+      830
+    ],
+    "face_split_anchor_y": 0.4,
+    "face_full_anchor_y": 0.34,
+    "split_zoom": 1.12,
+    "full_zoom": 1.04,
+    "emphasis_punch": 1.1
+  },
+  "captions": {
+    "max_words": 3,
+    "max_chars": 8,
+    "max_dur": 1.2,
+    "font_size": 70,
+    "font_weight": 700,
+    "pad_x": 26,
+    "pad_y": 12,
+    "radius": 10,
+    "y_split": 0.48,
+    "y_full_face": 0.62,
+    "y_full_graphic": 0.48,
+    "pop_in": 0.07
+  },
+  "cuts": {
+    "pad_before": 0.08,
+    "pad_after": 0.1,
+    "merge_gap": 0.12,
+    "retake_similarity": 0.72,
+    "fillers": [
+      "음",
+      "어",
+      "아",
+      "그",
+      "으",
+      "에",
+      "음..",
+      "어..",
+      "아..",
+      "그..."
+    ],
+    "end_tail": 0.6
+  },
+  "rhythm": {
+    "segment_min": 1.0,
+    "segment_target": 1.5,
+    "segment_max": 2.1,
+    "face_full_ratio": 0.22,
+    "graphic_full_ratio": 0.12
+  },
+  "audio": {
+    "target_lufs": -14.0,
+    "true_peak": -1.5,
+    "sfx_gain_db": -20.0,
+    "sfx_on_cuts": true
+  },
+  "speed": 1.15
+}
