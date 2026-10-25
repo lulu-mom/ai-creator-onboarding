@@ -31,7 +31,7 @@ $ENGINE = "$repo\reel-toolkit"
 확인: `python pipeline/make_reel.py --help` 가 돌면 준비 완료. (`ai-creator-onboarding` 스킬의 `setup.ps1` 도 같은 일을 한다.)
 
 ## 3. 스타일 목록 만들기
-설치된 스타일 스킬을 찾는다: `~/.claude/skills/reel-style-*/SKILL.md` (Glob). 새 스타일 스킬을 설치하면 자동으로 목록에 뜬다.
+설치된 스타일 스킬을 찾는다: `~/.claude/skills/reel-style-*/SKILL.md` (Codex: `~/.agents/skills/reel-style-*/SKILL.md`). 새 스타일 스킬을 설치하면 자동으로 목록에 뜬다.
 각 파일의 frontmatter `description` **첫 문장**(첫 마침표까지)이 한 줄 설명이다. 스킬 이름에서 `reel-style-` 를 뺀 부분이 id.
 쉬운 한국어 이름표(없는 id 는 description 첫 구절로):
 | id | 이름 |
@@ -71,7 +71,7 @@ $ENGINE = "$repo\reel-toolkit"
 4. 1등으로 진행하고 한 줄로 알린다: "○○ 스타일로 만들게요. (이유: ~가 많아서요) 2등은 △△였어요 — 원하면 그걸로도 만들어 드릴게요."
 
 ## 5. 선택한 스타일 스킬 실행
-- 선택한 `reel-style-<id>` 스킬(Skill 도구)을 불러 그 SKILL.md 절차를 끝까지 따른다(받아쓰기·컷 → 계획 JSON 작성 → 렌더 → 품질 루프 → 결과 보여주기). `$ENGINE` 은 2단계에서 찾은 경로.
+- 선택한 `reel-style-<id>` 스킬을 불러(Claude: Skill 도구, Codex: 그 SKILL.md 열기) 그 SKILL.md 절차를 끝까지 따른다(받아쓰기·컷 → 계획 JSON 작성 → 렌더 → 품질 루프 → 결과 보여주기). `$ENGINE` 은 2단계에서 찾은 경로.
 - 렌더는 1회 4~20분 걸린다. 시작할 때 "몇 분 걸려요, 끝나면 알려드릴게요" 한 줄만.
 
 ## 6. 다른 스타일로 다시 만들기

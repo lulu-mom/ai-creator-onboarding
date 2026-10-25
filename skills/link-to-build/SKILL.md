@@ -18,7 +18,7 @@ description: 사용자가 유튜브·쇼츠·릴스·틱톡·인스타·X·블�
   1. 정보·자막: `yt-dlp --skip-download --write-info-json --write-auto-subs --sub-langs "ko,en" -o "source/%(id)s" <링크>`
   2. 자막이 없으면 음성만 받아서 받아쓰기:
      `yt-dlp -x --audio-format mp3 -o "source/audio.%(ext)s" <링크>` 후
-     `python ~/.claude/skills/link-to-build/scripts/transcribe.py source/audio.mp3 source/transcript.txt`
+     `python <이 스킬 폴더>/scripts/transcribe.py source/audio.mp3 source/transcript.txt` (이 스킬 폴더 = 이 SKILL.md 가 있는 곳. Claude: `~/.claude/skills/link-to-build`, Codex: `~/.agents/skills/link-to-build`)
   3. 화면 구성이 중요하면 영상을 받아 ffmpeg로 몇 장면 캡처해서 직접 본다
      (`ffmpeg -i video.mp4 -vf fps=1/5 source/frame_%03d.jpg`).
   4. 설명란·고정댓글에 나온 GitHub/도구 링크도 따라가서 읽는다.
