@@ -165,6 +165,7 @@ else { Say "global CLAUDE.md exists - merge assets\global-CLAUDE.md manually if 
 # 9. Routing table check: every installed skill should appear in the phrase -> skill table
 $routing = powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $here "check-routing.ps1") -Rules $g 2>&1 | Out-String
 Say ("routing table: " + $routing.Trim())
+if ($LASTEXITCODE -eq 1) { Say "routing table: missing skills above -> add a row for each to the CLAUDE.md table" }
 
 Write-Host "`n===== SUMMARY ====="
 $report | ForEach-Object { Write-Host " - $_" }
