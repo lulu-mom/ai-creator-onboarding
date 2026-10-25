@@ -38,6 +38,38 @@ npx skills add lulu-mom/ai-creator-onboarding -g -a claude-code
 
 Claude가 `scripts/setup.ps1` 을 실행해 아래 도구를 설치하고, 로그인이 필요한 곳만 브라우저를 띄워 요청합니다.
 
+OpenAI **Codex** 도 같이 쓰면 이렇게 설치하세요 (두 곳에 한 번에):
+
+```bash
+npx skills add lulu-mom/ai-creator-onboarding -g -a claude-code codex
+```
+
+## Codex에서 쓰기
+
+Codex(CLI 또는 앱)가 깔려 있으면 온보딩이 같은 환경을 Codex 에도 만들어 줍니다. Codex 에서 바로 "온보딩 해줘" 라고 해도 됩니다.
+
+- **같은 스킬**: 모든 스킬을 Codex 스킬 폴더(`~/.agents/skills`)에도 설치합니다. "릴스 대본 써줘" → `ig-reel`, "릴스 만들어줘" + 영상 → `reel-maker` 처럼 똑같이 골라 씁니다.
+- **같은 규칙**: Codex 용 규칙 파일 `~/.codex/AGENTS.md` 를 만들어 줍니다(한국어로 짧게, 알아서 끝까지, 위험한 일만 묻기, 말 → 스킬 표). 프로젝트의 `CLAUDE.md` 도 Codex 가 그대로 읽게 설정합니다.
+- **같은 연결 도구**: Higgsfield, Meta Ads, Playwright, Headroom, Bright Data(연결 열쇠를 받은 뒤 온보딩을 한 번 더 돌리면 추가). 키는 설정 파일에 쓰지 않고 환경변수 이름만 적습니다.
+
+**한 번만 해 주세요** (터미널에서):
+
+| 할 일 | 명령 |
+|---|---|
+| Codex 로그인 | `codex login` |
+| Higgsfield 로그인 | `codex mcp login higgsfield` → 열린 창에서 로그인 |
+| Meta Ads 로그인 | `codex mcp login meta-ads` → 열린 창에서 로그인 |
+
+**Claude Code 와 다른 점**
+
+| | Claude Code | Codex |
+|---|---|---|
+| 도우미 여러 명 동시 작업 | 자동으로 따로 작업 공간을 나눠 병렬 개발 | 도우미가 같은 폴더를 같이 씀 → 조사는 동시에, 개발은 하나씩 |
+| ECC 플러그인 | 있음 | 없음 (ECC 규칙 파일만 읽어서 따름) |
+| 연결 도구 로그인 | `/mcp` | `codex mcp login <이름>` |
+| 결과 페이지 | Artifact | HTML 파일을 만들어 브라우저로 열기 |
+| 명령 실행 허락 | 설정에 따라 | Codex 가 실행 전에 허락을 물을 수 있음 |
+
 ## 설치되는 것
 
 - **플러그인**: [ECC (Everything Claude Code)](https://github.com/affaan-m/ECC)
@@ -64,7 +96,7 @@ Claude가 `scripts/setup.ps1` 을 실행해 아래 도구를 설치하고, 로�
 키는 Windows 사용자 환경변수나 도구 설정에만 저장되며, 이 저장소에는 어떤 키도 들어있지 않습니다.
 
 ## 요구 사항
-Windows 10/11, Claude Code, winget. (Node.js, Python, Git, ffmpeg, gh 는 없으면 스크립트가 설치)
+Windows 10/11, Claude Code 또는 Codex(둘 다 가능), winget. (Node.js, Python, Git, ffmpeg, gh 는 없으면 스크립트가 설치)
 
 ## License
 MIT

@@ -109,3 +109,45 @@ powershell -ExecutionPolicy Bypass -File "$HOME\.claude\skills\ai-creator-onboar
 - `skills add` 의 개발자용 부속 스킬(예: ego-lite-simplify)은 지운다.
 - headroom 의 `wrap claude`(프록시 실행)는 Claude 실행 방식을 바꾸므로 켜지 않았다(MCP만 사용).
 - bright-data-mcp 스킬은 "모든 웹 작업을 Bright Data로" 라고 주장하지만, 무료 크레딧을 아끼려면 단순 조회는 WebFetch/WebSearch 로 충분.
+
+## 7. Codex에서 쓰기 (OpenAI Codex CLI / 앱)
+Codex 가 깔려 있으면(`codex` 명령 또는 `~/.codex` 폴더) setup 이 같은 환경을 Codex 에도 만든다. 없으면 건너뛴다. Claude Code 없이 Codex 만 있어도 된다(Claude 전용 단계는 건너뜀).
+Codex 에서 온보딩을 돌릴 때 스크립트 위치: `$HOME\.agents\skills\ai-creator-onboarding\scripts\setup.ps1`
+
+setup 이 Codex 쪽에 하는 일:
+- **스킬**: 같은 스킬 묶음을 `npx skills add ... -a claude-code codex` 로 두 곳에 설치. Codex 쪽 위치는 `~/.agents/skills` (Codex 가 여기서 스킬 목록을 읽는다). 직접 만든 스킬도 복사.
+- **규칙**: `assets/global-AGENTS.md` → `~/.codex/AGENTS.md` (없거나 비어 있으면 복사. 이미 있으면 건드리지 않고 안내만 → 빠진 섹션은 Claude/Codex 가 손으로 합친다). 맨 위 "바꿔 읽기" 표가 Claude 전용 표현(Skill 도구, 서브에이전트, `/mcp`, Artifact …)을 Codex 식으로 옮겨 준다.
+- **프로젝트 규칙**: `~/.codex/config.toml` 에 `project_doc_fallback_filenames = ["CLAUDE.md"]` → 프로젝트에 `CLAUDE.md` 만 있어도 Codex 가 그대로 읽는다(따로 `AGENTS.md` 를 만들 필요 없음. 만들면 그쪽이 우선). 긴 규칙 때문에 `project_doc_max_bytes = 65536`.
+- **연결 도구(MCP)**: higgsfield, meta-ads(로그인형), playwright, headroom, brightdata. brightdata 키는 설정 파일에 값을 쓰지 않고 환경변수 이름만 적는다(`bearer_token_env_var = "BRIGHTDATA_API_KEY"`).
+
+사용자 할 일 (한 번만, 터미널에서):
+| 할 일 | 명령 |
+|---|---|
+| Codex 로그인 (ChatGPT 계정) | `codex login` |
+| Higgsfield 로그인 | `codex mcp login higgsfield` → 열린 창에서 로그인 |
+| Meta 광고 로그인 | `codex mcp login meta-ads` → 열린 창에서 로그인 |
+
+같은 점 / 다른 점:
+| | Claude Code | Codex |
+|---|---|---|
+| 한국어로 짧게, 알아서 끝까지, 위험한 일만 묻기 | 같음 | 같음 |
+| "릴스 대본 써줘" 같은 말 → 스킬 | Skill 도구로 부름 | 스킬 목록에서 골라 SKILL.md 를 따름 (`$ig-reel` 처럼 직접 부를 수도) |
+| 릴스 자동 편집(reel-maker + 스타일 4종) | 됨 | 됨 (같은 엔진·같은 파이썬 사용) |
+| 링크 → 구현(link-to-build), 오픈소스 먼저(oss-scout) | 됨 | 됨 |
+| 도우미 여러 명 동시 작업 | 서브에이전트 + 자동으로 따로 작업 공간 | 하위 에이전트가 같은 폴더를 같이 씀 → 조사는 병렬, 개발은 하나씩 (꼭 필요하면 `git worktree add` 로 직접 분리) |
+| ECC 플러그인 | 있음 | 없음 → ECC 규칙 파일(`~/.claude/rules/ecc/common/`)만 읽어 따름 |
+| 연결 도구 로그인 | `/mcp` → Authenticate | `codex mcp login <이름>` |
+| 결과 페이지 | Artifact | HTML 파일을 만들어 브라우저로 열기 |
+| 명령 실행 허락 | 설정에 따라 | Codex 가 실행 전에 허락을 물을 수 있음 |
+
+점검:
+```powershell
+codex login status; codex mcp list
+(Get-ChildItem "$HOME\.agents\skills" -Directory).Count
+powershell -ExecutionPolicy Bypass -File "$HOME\.agents\skills\ai-creator-onboarding\scripts\check-routing.ps1" -Rules "$HOME\.codex\AGENTS.md" -SkillsDir "$HOME\.agents\skills"
+codex exec -s read-only "릴스 대본 써줘 라고 하면 어떤 스킬을 쓸지 이름만 한국어로 답해"   # ig-reel 이라고 답하면 정상
+```
+알아둔 함정:
+- `codex mcp add` 로 로그인형 서버를 넣으면 그 자리에서 로그인을 기다리며 멈춘다 → setup 은 `config.toml` 에 직접 쓴다. 로그인은 나중에 `codex mcp login`.
+- 스킬을 새로 깔 땐 `-a claude-code codex` 로 두 곳 다. 새 스킬은 두 규칙 파일(`~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`)의 표에 모두 한 줄 추가.
+- 새로 설치한 것은 Codex 새 세션부터 적용.

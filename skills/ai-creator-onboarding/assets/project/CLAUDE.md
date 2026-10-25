@@ -1,5 +1,8 @@
 # <프로젝트 이름>
 
+> **Codex 에서도 이 파일이 그대로 읽힌다** (`~/.codex/config.toml` 의 `project_doc_fallback_filenames = ["CLAUDE.md"]`, 온보딩 setup 이 설정). 이 폴더에 `AGENTS.md` 를 따로 두면 이 파일 대신 그쪽만 읽힌다.
+> Claude 전용 표현(Skill 도구, `subagent_type`, `claude mcp`, `/mcp` …)은 `~/.codex/AGENTS.md` 맨 위 "바꿔 읽기" 표대로 옮겨 읽는다.
+
 AI 에이전트 · AI 쇼츠/영상 · 콘텐츠 생성·자동 편집·배포 실험 프로젝트.
 사용자 작업 규칙(소통 방식, 자율 진행, 링크 → 구현, 오픈소스 우선)은 `~/.claude/CLAUDE.md` 를 따른다.
 
@@ -33,7 +36,7 @@ AI 에이전트 · AI 쇼츠/영상 · 콘텐츠 생성·자동 편집·배포 �
 - 현재 쓰는 이름: `UPLOAD_POST_API_KEY`, `BRIGHTDATA_API_KEY` (선택: `GEMINI_API_KEY`)
 
 ## 말하면 바로 쓰는 스킬
-사용자가 쉬운 말로 부탁하면 아래 표에서 맞는 스킬을 바로 부른다(Skill 도구). 여러 개가 맞으면 위에 있는 것 먼저. 애매하면 가장 가까운 걸로 진행하고 결과에 "○○로 했어요"라고 한 줄 남긴다.
+사용자가 쉬운 말로 부탁하면 아래 표에서 맞는 스킬을 바로 부른다(Claude: Skill 도구 / Codex: 그 스킬의 `SKILL.md` 를 열어 따르기). 여러 개가 맞으면 위에 있는 것 먼저. 애매하면 가장 가까운 걸로 진행하고 결과에 "○○로 했어요"라고 한 줄 남긴다.
 **새 스킬을 설치하면 이 표에도 한 줄 추가한다** (전역 `~/.claude/CLAUDE.md` 의 "자주 쓰는 말 → 스킬" 에도). 빠진 스킬 찾기: 온보딩 스킬의 `scripts/check-routing.ps1`.
 
 ### 영상 편집
