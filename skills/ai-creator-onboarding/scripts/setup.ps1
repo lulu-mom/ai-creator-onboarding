@@ -10,6 +10,11 @@ $report = New-Object System.Collections.Generic.List[string]
 function Say($m) { Write-Host "== $m"; $report.Add($m) }
 function Has($c) { [bool](Get-Command $c -ErrorAction SilentlyContinue) }
 function RefreshPath { $env:Path = [Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [Environment]::GetEnvironmentVariable("Path","User") }
+# OpenAI Codex (optional): CLI on PATH or app config folder -> also set up skills, rules and MCP for Codex
+$codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { "$HOME\.codex" }
+$useCodex = (Has codex) -or (Test-Path $codexHome)
+$codexSkillsDir = "$HOME\.agents\skills"   # where "skills add -a codex -g" installs; Codex reads it
+$skillAgents = @("claude-code"); if ($useCodex) { $skillAgents += "codex" }
 
 # 1. Base programs
 $winget = @{ node = "OpenJS.NodeJS.LTS"; git = "Git.Git"; python = "Python.Python.3.13"; ffmpeg = "Gyan.FFmpeg"; gh = "GitHub.cli" }
@@ -54,34 +59,38 @@ $skillRepos = @(
   @("citrolabs/ego-lite", "ego-browser", $true)
 )
 foreach ($r in $skillRepos) {
-  $npxArgs = @("-y", "skills", "add", $r[0], "-g", "-a", "claude-code", "-y", "--copy", "--skill") + ($r[1] -split " ")
+  $npxArgs = @("-y", "skills", "add", $r[0], "-g", "-a") + $skillAgents + @("-y", "--copy", "--skill") + ($r[1] -split " ")
   if ($r[2]) { $npxArgs += "--full-depth" }
   npx @npxArgs 2>&1 | Out-Null
-  Say "skills: $($r[0]) [$($r[1])]"
+  if ($LASTEXITCODE -ne 0) { npx @npxArgs 2>&1 | Out-Null }   # one retry: the CLI sometimes cancels on a slow fetch
+  if ($LASTEXITCODE -eq 0) { Say "skills: $($r[0]) [$($r[1])] -> $($skillAgents -join ', ')" } else { Say "skills FAILED: $($r[0]) (re-run later)" }
 }
 # Workflow skills from this repo
 $ownSkills = @("link-to-build", "oss-scout", "ai-creator-onboarding", "reel-maker",
   "reel-style-split-card", "reel-style-news-brief", "reel-style-bold-talk", "reel-style-doodle")
-$npxArgs = @("-y", "skills", "add", "lulu-mom/ai-creator-onboarding", "-g", "-a", "claude-code", "-y", "--copy", "--skill") + $ownSkills
+$npxArgs = @("-y", "skills", "add", "lulu-mom/ai-creator-onboarding", "-g", "-a") + $skillAgents + @("-y", "--copy", "--skill") + $ownSkills
 npx @npxArgs 2>&1 | Out-Null
 Say "skills: $($ownSkills -join ', ')"
 
-# 5. Plugin: ECC (Everything Claude Code)
-$plugins = claude plugin list 2>&1 | Out-String
-if ($plugins -notmatch "ecc@ecc") {
-  claude plugin marketplace add https://github.com/affaan-m/ECC | Out-Null
-  claude plugin install ecc@ecc | Out-Null
-  Say "plugin ecc@ecc installed"
-} else { Say "plugin ecc ok" }
+# 5-6. Claude Code plugin + MCP (skipped when only Codex is installed)
+if (Has claude) {
+  # 5. Plugin: ECC (Everything Claude Code)
+  $plugins = claude plugin list 2>&1 | Out-String
+  if ($plugins -notmatch "ecc@ecc") {
+    claude plugin marketplace add https://github.com/affaan-m/ECC | Out-Null
+    claude plugin install ecc@ecc | Out-Null
+    Say "plugin ecc@ecc installed"
+  } else { Say "plugin ecc ok" }
 
-# 6. MCP servers (no keys needed here; OAuth via /mcp later)
-$mcp = claude mcp list 2>&1 | Out-String
-if ($mcp -notmatch "higgsfield") { claude mcp add --transport http --scope user higgsfield https://mcp.higgsfield.ai/mcp | Out-Null; Say "mcp higgsfield added" }
-if ($mcp -notmatch "meta-ads")   { claude mcp add --transport http --scope user meta-ads https://mcp.facebook.com/ads | Out-Null; Say "mcp meta-ads added" }
-if ($mcp -notmatch "playwright") { claude mcp add --scope user playwright -- npx -y "@playwright/mcp@latest" | Out-Null; Say "mcp playwright added" }
-if ($mcp -notmatch "headroom")   { headroom mcp install | Out-Null; Say "mcp headroom added" }
-$bd = [Environment]::GetEnvironmentVariable("BRIGHTDATA_API_KEY","User")
-if ($bd -and $mcp -notmatch "brightdata") { claude mcp add --scope user --transport sse brightdata "https://mcp.brightdata.com/sse?token=$bd" | Out-Null; Say "mcp brightdata added" }
+  # 6. MCP servers (no keys needed here; OAuth via /mcp later)
+  $mcp = claude mcp list 2>&1 | Out-String
+  if ($mcp -notmatch "higgsfield") { claude mcp add --transport http --scope user higgsfield https://mcp.higgsfield.ai/mcp | Out-Null; Say "mcp higgsfield added" }
+  if ($mcp -notmatch "meta-ads")   { claude mcp add --transport http --scope user meta-ads https://mcp.facebook.com/ads | Out-Null; Say "mcp meta-ads added" }
+  if ($mcp -notmatch "playwright") { claude mcp add --scope user playwright -- npx -y "@playwright/mcp@latest" | Out-Null; Say "mcp playwright added" }
+  if ($mcp -notmatch "headroom")   { headroom mcp install | Out-Null; Say "mcp headroom added" }
+  $bd = [Environment]::GetEnvironmentVariable("BRIGHTDATA_API_KEY","User")
+  if ($bd -and $mcp -notmatch "brightdata") { claude mcp add --scope user --transport sse brightdata "https://mcp.brightdata.com/sse?token=$bd" | Out-Null; Say "mcp brightdata added" }
+} else { Say "claude command not found - Claude Code plugin/MCP steps skipped" }
 
 # 7. OpenMontage
 $om = Join-Path $ProjectsDir "OpenMontage"
@@ -166,6 +175,53 @@ else { Say "global CLAUDE.md exists - merge assets\global-CLAUDE.md manually if 
 $routing = powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $here "check-routing.ps1") -Rules $g 2>&1 | Out-String
 Say ("routing table: " + $routing.Trim())
 if ($LASTEXITCODE -eq 1) { Say "routing table: missing skills above -> add a row for each to the CLAUDE.md table" }
+
+
+# 10. OpenAI Codex (optional): rules (AGENTS.md), CLAUDE.md fallback, MCP servers. Skills were installed in step 4.
+#     Edits ~/.codex/config.toml directly (no `codex mcp add`: it starts an OAuth login and waits).
+function Set-CodexTopKey($cfg, $key, $value) {
+  $text = if (Test-Path $cfg) { [IO.File]::ReadAllText($cfg) } else { "" }
+  $top = ($text -split "(?m)^\s*\[", 2)[0]   # top-level keys must come before the first [table]
+  if ($top -match "(?m)^\s*$([regex]::Escape($key))\s*=") { return "ok" }
+  [IO.File]::WriteAllText($cfg, "$key = $value`n" + $text, (New-Object Text.UTF8Encoding($false)))
+  return "set"
+}
+function Add-CodexMcp($cfg, $name, $body) {
+  $text = if (Test-Path $cfg) { [IO.File]::ReadAllText($cfg) } else { "" }
+  $n = [regex]::Escape($name)
+  # table [mcp_servers.x] / ["x"] / ['x'], inline `x = {...}` under [mcp_servers], or dotted mcp_servers.x.key
+  if ($text -match "(?m)^\s*\[\s*mcp_servers\s*\.\s*[`"']?$n[`"']?\s*\]" -or $text -match "(?m)^\s*mcp_servers\s*\.\s*[`"']?$n[`"']?\s*\." -or
+      ($text -match "(?m)^\s*\[\s*mcp_servers\s*\]" -and $text -match "(?m)^\s*[`"']?$n[`"']?\s*=\s*\{")) { return "ok" }
+  [IO.File]::AppendAllText($cfg, "`n[mcp_servers.$name]`n$body`n", (New-Object Text.UTF8Encoding($false)))
+  return "added"
+}
+if ($useCodex) {
+  New-Item -ItemType Directory -Force $codexHome | Out-Null
+  $ccfg = Join-Path $codexHome "config.toml"
+  if ((Test-Path $ccfg) -and -not (Test-Path "$ccfg.onboarding.bak")) { Copy-Item $ccfg "$ccfg.onboarding.bak" }   # first-run original
+  # rules: global AGENTS.md (an empty file counts as missing)
+  $ag = Join-Path $codexHome "AGENTS.md"
+  if (-not (Test-Path $ag) -or (Get-Item $ag).Length -eq 0) { Copy-Item -Force "$assets\global-AGENTS.md" $ag; Say "codex: global AGENTS.md created" }
+  else { Say "codex: AGENTS.md exists - merge assets\global-AGENTS.md manually if sections are missing" }
+  # projects that only have CLAUDE.md are read by Codex too; raise the size limit for long rule files
+  Say ("codex: CLAUDE.md fallback " + (Set-CodexTopKey $ccfg "project_doc_fallback_filenames" '["CLAUDE.md"]'))
+  Say ("codex: project doc limit " + (Set-CodexTopKey $ccfg "project_doc_max_bytes" "65536"))
+  # MCP servers (OAuth ones need one login: codex mcp login <name>)
+  Say ("codex mcp higgsfield " + (Add-CodexMcp $ccfg "higgsfield" 'url = "https://mcp.higgsfield.ai/mcp"'))
+  Say ("codex mcp meta-ads " + (Add-CodexMcp $ccfg "meta-ads" 'url = "https://mcp.facebook.com/ads"'))
+  Say ("codex mcp playwright " + (Add-CodexMcp $ccfg "playwright" "command = `"npx`"`nargs = [`"-y`", `"@playwright/mcp@latest`"]"))
+  if ([Environment]::GetEnvironmentVariable("BRIGHTDATA_API_KEY","User")) {
+    # key stays in the user env var; config only names it (sent as a Bearer header)
+    Say ("codex mcp brightdata " + (Add-CodexMcp $ccfg "brightdata" "url = `"https://mcp.brightdata.com/mcp`"`nbearer_token_env_var = `"BRIGHTDATA_API_KEY`""))
+  } else { Say "codex mcp brightdata skipped (no BRIGHTDATA_API_KEY yet - re-run after the key is saved)" }
+  if ((Get-Content $ccfg -Raw) -notmatch "(?m)^\s*\[mcp_servers\.headroom\]" -and (Has headroom)) { headroom mcp install --agent codex 2>&1 | Out-Null; Say "codex mcp headroom added" }
+  if (Has codex) {
+    $routingCodex = powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $here "check-routing.ps1") -Rules $ag -SkillsDir $codexSkillsDir 2>&1 | Out-String
+    Say ("codex routing table: " + $routingCodex.Trim())
+    if ($LASTEXITCODE -eq 1) { Say "codex routing table: missing skills above -> add a row for each to ~/.codex/AGENTS.md" }
+    Say "codex: to do once in a terminal -> codex login ; codex mcp login higgsfield ; codex mcp login meta-ads"
+  } else { Say "codex: config folder found but no codex command - install the Codex CLI (npm i -g @openai/codex) to use it in a terminal" }
+} else { Say "codex not found - skipped (optional)" }
 
 Write-Host "`n===== SUMMARY ====="
 $report | ForEach-Object { Write-Host " - $_" }
