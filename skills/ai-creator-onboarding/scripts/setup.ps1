@@ -40,6 +40,7 @@ $skillRepos = @(
   @("remotion-dev/skills", "*", $false),
   @("greensock/gsap-skills", "*", $false),
   @("Jakeschincariol/youtube-agent-skill", "*", $true),
+  @("Jakeschincariol/instagram-agent-skill", "*", $true),
   @("mattpocock/skills", "grill-me grilling research", $false),
   @("rebelytics/one-skill-to-rule-them-all", "*", $true),
   @("brightdata/skills", "*", $true),
@@ -160,6 +161,10 @@ Say "agent issue-worker installed"
 $g = "$HOME\.claude\CLAUDE.md"
 if (-not (Test-Path $g)) { Copy-Item "$assets\global-CLAUDE.md" $g; Say "global CLAUDE.md created" }
 else { Say "global CLAUDE.md exists - merge assets\global-CLAUDE.md manually if sections are missing" }
+
+# 9. Routing table check: every installed skill should appear in the phrase -> skill table
+$routing = powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $here "check-routing.ps1") -Rules $g 2>&1 | Out-String
+Say ("routing table: " + $routing.Trim())
 
 Write-Host "`n===== SUMMARY ====="
 $report | ForEach-Object { Write-Host " - $_" }

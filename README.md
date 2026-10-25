@@ -20,6 +20,8 @@ GitHub에서 요즘 뜨는 무료 오픈소스 스킬·MCP를 한 번에 설치�
 
 **릴스 자동 편집 엔진** `reel-toolkit/`: 받아쓰기(faster-whisper) → 말 끊김·NG 컷 → 얼굴 추적 → 자막·카드 계획 → HyperFrames 렌더 → 효과음·음량 맞추기까지 한 번에 하는 편집기와 품질 채점기. 위 `reel-*` 스킬이 이 엔진을 씁니다. 한국어 세로(9:16) 토크 영상용이고, 얼굴이 보이는 영상이어야 합니다. 각 스타일 폴더의 `preview.png` 는 예시 대본과 가짜 화자 그림으로 만든 샘플입니다.
 
+**말하면 바로 쓰는 스킬**: "릴스 만들어줘", "캡션 써줘", "카드뉴스 만들어줘", "요즘 뜨는 릴스 찾아줘" 같은 쉬운 말을 맞는 스킬로 바로 연결하는 표가 규칙 파일에 들어 있습니다. 설치가 끝나면 표에 빠진 스킬이 없는지 자동으로 점검합니다(`scripts/check-routing.ps1`).
+
 **작업 방식**: 한국어 대화 + 총괄 비서 + 이슈별 워크트리 개발 (issue-worker 에이전트, ECC 규칙 연결) — 메인 세션은 대화·분배만, 개발은 이슈마다 워크트리에서 테스트·리뷰·PR·머지까지.
 
 ## 설치
@@ -43,7 +45,7 @@ Claude가 `scripts/setup.ps1` 을 실행해 아래 도구를 설치하고, 로�
 - **영상**: HyperFrames, Remotion, GSAP, Hypit, OpenMontage, ffmpeg
 - **릴스 자동 편집**: 이 저장소의 `reel-toolkit/` 폴더만 `~\projects\ai-creator-onboarding\reel-toolkit` 에 받아서(로그인 불필요) npm 패키지·크로미엄·얼굴 인식 모델·파이썬 패키지까지 설치, 스킬 `reel-maker` + 스타일 4종
 - **음성/비전**: faster-whisper, Silero VAD, MediaPipe, yt-dlp
-- **유튜브·배포**: youtube-agent-skill(yt-*), Upload-Post 스킬(autoshorts, viraloop 등)
+- **유튜브·인스타·배포**: youtube-agent-skill(yt-*), instagram-agent-skill(ig-* — 릴스 대본·캡션·카드뉴스·스토리·DM 문구, 글만 쓰고 게시·로그인 없음), Upload-Post 스킬(autoshorts, viraloop 등)
 - **조사**: find-skills, last30days, research, search-strategy, baoyu-youtube-transcript, Bright Data 스킬
 - **작업 방식**: grill-me, task-observer(One Skill to Rule Them All), agent-browser, ego-browser(ego lite)
 
