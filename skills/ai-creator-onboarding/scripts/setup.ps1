@@ -59,8 +59,11 @@ foreach ($r in $skillRepos) {
   Say "skills: $($r[0]) [$($r[1])]"
 }
 # Workflow skills from this repo
-npx -y skills add lulu-mom/ai-creator-onboarding -g -a claude-code -y --copy --skill link-to-build oss-scout ai-creator-onboarding 2>&1 | Out-Null
-Say "skills: link-to-build, oss-scout, ai-creator-onboarding"
+$ownSkills = @("link-to-build", "oss-scout", "ai-creator-onboarding", "reel-maker",
+  "reel-style-split-card", "reel-style-news-brief", "reel-style-bold-talk", "reel-style-doodle")
+$npxArgs = @("-y", "skills", "add", "lulu-mom/ai-creator-onboarding", "-g", "-a", "claude-code", "-y", "--copy", "--skill") + $ownSkills
+npx @npxArgs 2>&1 | Out-Null
+Say "skills: $($ownSkills -join ', ')"
 
 # 5. Plugin: ECC (Everything Claude Code)
 $plugins = claude plugin list 2>&1 | Out-String
@@ -94,7 +97,55 @@ if (-not (Test-Path $om)) {
   Say "OpenMontage installed at $om"
 } else { Say "OpenMontage ok" }
 
-# 7-1. ECC common rules (plugin installs do not ship rules) + issue-worker agent
+# 7-1. reel-toolkit: auto reel editor engine (reel-toolkit/ folder of this public repo, used by
+#      reel-maker / reel-style-* skills). No GitHub login needed: sparse clone of just that folder.
+$rtRepo = Join-Path $ProjectsDir "ai-creator-onboarding"
+$rt = Join-Path $rtRepo "reel-toolkit"
+if (-not (Test-Path "$rt\pipeline\make_reel.py")) {
+  if (Test-Path $rtRepo) {
+    Say "reel-toolkit SKIPPED: $rtRepo exists but has no reel-toolkit (move it away, then re-run)"
+  } else {
+    New-Item -ItemType Directory -Force $ProjectsDir | Out-Null
+    git clone -q --depth 1 --filter=blob:none --sparse https://github.com/lulu-mom/ai-creator-onboarding.git $rtRepo 2>&1 | Out-Null
+    git -C $rtRepo sparse-checkout set reel-toolkit 2>&1 | Out-Null
+    if (Test-Path "$rt\pipeline\make_reel.py") { Say "reel-toolkit downloaded to $rt" } else {
+      # this run created the folder: remove the half-finished clone so a re-run can retry
+      Remove-Item -Recurse -Force $rtRepo -ErrorAction SilentlyContinue
+      Say "reel-toolkit download FAILED (check internet, then re-run)"
+    }
+  }
+} else {
+  git -C $rtRepo pull --ff-only -q 2>&1 | Out-Null
+  if ($LASTEXITCODE -eq 0) { Say "reel-toolkit updated" } else { Say "reel-toolkit ok (not updated: offline or local changes)" }
+}
+if (Test-Path "$rt\pipeline\make_reel.py") {
+  [Environment]::SetEnvironmentVariable("REEL_TOOLKIT_DIR", $rt, "User")
+  Push-Location $rt
+  if (-not ((Test-Path "node_modules\hyperframes") -and (Test-Path "node_modules\playwright"))) {
+    npm ci 2>&1 | Out-Null
+    if ($LASTEXITCODE -eq 0) { Say "reel-toolkit npm ci" } else { Say "reel-toolkit npm ci FAILED (re-run later)" }
+  }
+  npx playwright install chromium 2>&1 | Out-Null
+  if (-not (Test-Path "models\face_landmarker.task")) {
+    New-Item -ItemType Directory -Force models | Out-Null
+    curl.exe -fsSL --retry 3 -o models/face_landmarker.task.tmp https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task 2>&1 | Out-Null
+    if ($LASTEXITCODE -eq 0 -and (Get-Item models/face_landmarker.task.tmp -ErrorAction SilentlyContinue).Length -gt 1MB) {
+      Move-Item -Force models/face_landmarker.task.tmp models/face_landmarker.task
+      Say "reel-toolkit face_landmarker.task downloaded"
+    } else {
+      Remove-Item -Force models/face_landmarker.task.tmp -ErrorAction SilentlyContinue
+      Say "reel-toolkit face_landmarker.task download FAILED (re-run later)"
+    }
+  }
+  python -m pip install -q faster-whisper mediapipe opencv-contrib-python silero-vad rapidocr pytest pillow numpy 2>&1 | Out-Null
+  python -c "import faster_whisper, mediapipe, cv2, silero_vad, rapidocr, PIL, numpy" 2>&1 | Out-Null
+  $pyOk = ($LASTEXITCODE -eq 0)
+  python pipeline/make_reel.py --help 2>&1 | Out-Null
+  if ($pyOk -and $LASTEXITCODE -eq 0) { Say "reel-toolkit ready at $rt (REEL_TOOLKIT_DIR set)" } else { Say "reel-toolkit check FAILED: python packages or pipeline/make_reel.py --help" }
+  Pop-Location
+}
+
+# 7-2. ECC common rules (plugin installs do not ship rules) + issue-worker agent
 $eccRoot = Get-ChildItem "$HOME\.claude\plugins\cache\ecc\ecc" -Directory -ErrorAction SilentlyContinue | Sort-Object Name | Select-Object -Last 1
 if ($eccRoot -and (Test-Path "$($eccRoot.FullName)\rules\common")) {
   New-Item -ItemType Directory -Force "$HOME\.claude\rules\ecc" | Out-Null
