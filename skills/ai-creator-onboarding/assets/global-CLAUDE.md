@@ -30,6 +30,23 @@
 - 사용자가 영상·SNS·GitHub·웹 링크를 주면(설명이 없어도) link-to-build 스킬로 내용 파악 → 시장조사 → 구현 → 결과 페이지로 보여주기까지 알아서 진행한다.
 
 
+## 자주 쓰는 말 → 스킬
+쉬운 말 부탁은 맞는 스킬을 바로 부른다(Skill 도구). 예시 말투가 더 많은 전체 표는 프로젝트 `CLAUDE.md` 의 "말하면 바로 쓰는 스킬"(있을 때).
+**새 스킬을 설치하면 이 표에도 한 줄 추가한다.** 빠진 스킬 찾기: 온보딩 스킬의 `scripts/check-routing.ps1`.
+
+| 분류 | 이렇게 말하면 → 스킬 |
+|---|---|
+| 영상 편집 | "릴스 만들어줘/이 영상 편집해줘" + mp4 → `reel-maker` (스플릿 카드·뉴스 브리핑·큰 자막 토크·화이트보드 낙서 → `reel-style-split-card` `reel-style-news-brief` `reel-style-bold-talk` `reel-style-doodle`) · "긴 영상에서 쇼츠 뽑아줘" → `autoshorts` · "코드로/HTML 영상" → `hyperframes` `hyperframes-cli` `hyperframes-registry` · "타이틀 인트로 효과" → `canopy-part-title` `code-slice-hero` `glass-shard-title` `wireframe-portal-title` `frost-sequence-camera-orbit` `cuboid-carousel` `orbit-card` · "음악·효과음·아이콘" → `media-use` · 피그마 → `figma` · 발표 → `slideshow` · 리모션 → `remotion-create` `remotion-best-practices` `remotion-captions` `remotion-maps` `remotion-render` `remotion-studio` `remotion-docs` `remotion-interactivity` `remotion-markup` `remotion-multimedia` `remotion-saas` `remotion-upgrade` `remotion-to-hyperframes` · 애니메이션 → `gsap-core` `gsap-timeline` `gsap-scrolltrigger` `gsap-plugins` `gsap-utils` `gsap-react` `gsap-frameworks` `gsap-performance` · "바이럴 영상처럼" → `hypit` · AI 생성 → MCP `higgsfield`(유료, 먼저 확인) |
+| 인스타 (글만, 로그인·게시 안 함) | 릴스 대본/훅 `ig-reel` · 캡션/해시태그 `ig-caption` · 카드뉴스 `ig-carousel` · 스토리 `ig-story` · 이번 주 뭐 올려 `ig-plan` · 프로필/바이오 `ig-profile` · 떡상 릴스 찾기 `ig-viral` · 성과 분석 `ig-audit` · 남의 글 댓글 `ig-comment` · 내 댓글 답장 `ig-reply` · DM `ig-dm` · AI 티 안 나게 `ig-human` · 긴 영상→릴스 여러 개 `ig-repurpose` |
+| 유튜브 (글만) | 대본 `yt-script` · 제목·썸네일 `yt-package` · 설명란·태그 `yt-seo` · 챕터 `yt-chapters` · 자를 곳 `yt-edit` · 쇼츠 뽑기 `yt-shorts` · 계획 `yt-plan` · 뜨는 영상 `yt-viral` · 채널 점검 `yt-audit` · 시청 지속률 `yt-retention` · 댓글 답장 `yt-comment` · 자막 뽑기 `baoyu-youtube-transcript` |
+| 배포 (초안까지만, 실제 게시·광고는 확인 후) | 올려줘/예약해줘 `upload-post` · AI로 만들어 올리기 `higgsfield-to-social` · 카드뉴스 자동 `viraloop` · 앱 홍보 슬라이드 `tiktok-app-marketing` · 댓글→DM 자동 `comment-funnel` · 광고 MCP `meta-ads` |
+| 조사·수집 | 요즘 반응/트렌드 `last30days` · 제대로 조사 `research` `search-strategy` · 스킬 찾기 `find-skills` · 웹페이지→글 `baoyu-url-to-markdown` · Bright Data(무료 크레딧): 검색 `search` `discover-api`, 긁어오기 `scrape` `bright-data-mcp` `brightdata-cli`, 플랫폼 데이터 `data-feeds`, 스크래퍼 `scraper-builder` `scraper-studio`, 깊은 리서치 `live-research`, 브랜드 평판 `brand-listening`, 경쟁사 `competitive-intel`, 가격 비교 `price-comparison`, SEO `seo-audit`, 디자인 따라하기 `design-mirror`, RAG `rag-pipeline`, 개발용 `brightdata-sdk` `brightdata-sdk-js` `brightdata-proxy` `bright-data-best-practices`, 세팅·디버그 `agent-onboarding` `brd-browser-debug` |
+| 브라우저·로그인 | 사이트 열기·로그인·키 받기 `ego-browser` (안 되면 `agent-browser`, MCP `playwright`) |
+| 작업 방식 | 링크만 → `link-to-build` · 새 기능 → `oss-scout` · AI 에이전트/계획 따지기 → `grilling` `grill-me` · 여러 단계 작업 → `task-observer` · 세팅 점검 → `ai-creator-onboarding` · 토큰 절약 MCP `headroom` · 개발 흐름 → ECC(아래 "ECC 연결") |
+
+- 한 편 만들기: `ig-reel` 대본 → 촬영 → `reel-maker` 편집 → `ig-caption` → `ig-human` → (확인 후) `upload-post`.
+- `ig-*`·`yt-*` 는 처음에 내 말투 파일(`~/.claude/instagram/voice.md`, `~/.claude/youtube/voice.md`)을 만든다.
+
 ## 직접 만들기 전에 오픈소스부터
 - 새 기능·자동화·영상/콘텐츠 작업을 시작하거나, 내가 잘 못하는 작업에서 막히면 oss-scout 스킬로 요즘 뜨는 무료 오픈소스 스킬·MCP를 먼저 찾아서 짧게 제안한다. 직접 개발은 그다음.
 - 설치 즉시 무료로 쓸 수 있는 것(API 키 불필요)을 최우선으로 고른다.

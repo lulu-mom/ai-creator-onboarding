@@ -41,8 +41,9 @@ powershell -ExecutionPolicy Bypass -File "$HOME\.claude\skills\ai-creator-onboar
 
 ## 3. 규칙 파일
 - 전역 규칙: `assets/global-CLAUDE.md` → `~/.claude/CLAUDE.md` (없으면 복사, 있으면 빠진 섹션만 합치기)
-  - 소통 방식(짧게·쉽게·티키타카), AI 에이전트 만들 땐 grilling → 계획서 → 개발, 자율 진행, task-observer, 링크 → link-to-build, 오픈소스 우선(oss-scout), 로그인/키 처리 규칙, 총괄 비서 역할, ECC 연결
-- 프로젝트 규칙 예시: `assets/project/CLAUDE.md` (브라우저 작업·키 보관 규칙). 새 프로젝트에 맞게 복사.
+  - 소통 방식(짧게·쉽게·티키타카), AI 에이전트 만들 땐 grilling → 계획서 → 개발, 자율 진행, task-observer, 링크 → link-to-build, 자주 쓰는 말 → 스킬 표, 오픈소스 우선(oss-scout), 로그인/키 처리 규칙, 총괄 비서 역할, ECC 연결
+  - 이미 `~/.claude/CLAUDE.md` 가 있으면 "자주 쓰는 말 → 스킬" 섹션이 빠졌는지 꼭 보고 합친다.
+- 프로젝트 규칙 예시: `assets/project/CLAUDE.md` (브라우저 작업·키 보관·말하면 바로 쓰는 스킬 표). 새 프로젝트에 맞게 복사.
 - 프로젝트 git 작성자: `git config user.name <github-id>` / `user.email <id>+<github-id>@users.noreply.github.com` (gh api user 로 id 확인)
 
 ## 3-1. 일하는 방식: 총괄 비서 + 이슈별 워크트리 개발
@@ -69,6 +70,7 @@ for l in "in-progress:FBCA04:작업 중" "needs-user:D93F0B:사용자 확인 필
 **스킬**
 - 영상: hyperframes 계열, remotion-* , gsap-* , hypit(바이럴 영상 참고 제작)
 - 유튜브: yt-* 11종 (youtube-agent-skill)
+- 인스타: ig-* 13종 (instagram-agent-skill — 릴스 대본·훅, 캡션, 카드뉴스, 스토리, 프로필 채점, 주간 계획, 떡상 릴스 찾기, 성과 분석, 댓글·DM 문구, AI 티 지우기. 글만 쓰고 게시·로그인 없음)
 - 배포: upload-post, autoshorts, viraloop, higgsfield-to-social, comment-funnel, tiktok-app-marketing
 - 조사: find-skills, last30days, research, search-strategy, baoyu-youtube-transcript, baoyu-url-to-markdown, Bright Data 스킬 21종
 - 작업 방식: grill-me/grilling, task-observer, agent-browser, ego-browser
@@ -91,6 +93,14 @@ ffmpeg -version | Select-Object -First 1; hypit version; yt-dlp --version
 python "$([Environment]::GetEnvironmentVariable('REEL_TOOLKIT_DIR','User'))\pipeline\make_reel.py" --help | Select-Object -First 1   # 릴스 엔진
 ```
 결과는 ✅/⚠️ 목록으로 짧게. ⚠️ 는 "로그인만 해주세요" 형태로 요청.
+
+**말 → 스킬 표 점검** (설치 끝에 setup 이 자동으로 한 번 돌림):
+```powershell
+powershell -ExecutionPolicy Bypass -File "$HOME\.claude\skills\ai-creator-onboarding\scripts\check-routing.ps1"
+# 프로젝트 표도 보려면: -Rules <프로젝트>\CLAUDE.md   / 일부러 뺄 스킬: -Ignore a,b
+```
+설치된 스킬 중 `~/.claude/CLAUDE.md` 의 "자주 쓰는 말 → 스킬" 표에 없는 것을 보여준다. 빠진 게 있으면 Claude 가 알맞은 분류에 한 줄씩 추가한다(프로젝트 "말하면 바로 쓰는 스킬" 표에도).
+- 규칙: **새 스킬을 설치하면 이 표에도 한 줄 추가.** 원본 표는 `assets/global-CLAUDE.md`(짧은 분류판), `assets/project/CLAUDE.md`(예시 말투가 많은 전체판).
 
 ## 6. 알아둔 함정
 - 새로 설치한 것은 **Claude Code 새 창**에서부터 적용.
